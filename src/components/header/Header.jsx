@@ -12,7 +12,7 @@ const Header = () => {
       mt="10px"
       color="dark"
     >
-      <Link>Boards</Link>
+      <Link to="/boards">Boards</Link>
     </Box>
   );
 };
