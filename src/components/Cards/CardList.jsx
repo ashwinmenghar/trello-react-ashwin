@@ -7,7 +7,7 @@ import AddCard from "./AddCard";
 
 const CardList = ({ card, isActive, onCardClick }) => {
   return (
-    <Card.Root width="100%" rounded="2xl" bg={"gray.200"} height="100%">
+    <Card.Root width="400px" rounded="2xl" bg={"gray.200"} height="100%">
       <Card.Header>
         <Box
           display="flex"

@@ -1,14 +1,20 @@
-import { Avatar, Button, Card } from "@chakra-ui/react";
+import { Card } from "@chakra-ui/react";
 import { Link } from "react-router";
 
 const Board = ({ board }) => {
   return (
-    <Card.Root width="200px" shadow="sm" cursor="pointer" m="10px">
-      <Card.Body>
-        <Link to={board.id}>
+    <Card.Root
+      width="200px"
+      shadow="sm"
+      cursor="pointer"
+      m="10px"
+      _hover={{ bg: "gray.100" }}
+    >
+      <Link to={board.id}>
+        <Card.Body>
           <Card.Title>{board.name}</Card.Title>
-        </Link>
-      </Card.Body>
+        </Card.Body>
+      </Link>
     </Card.Root>
   );
 };
