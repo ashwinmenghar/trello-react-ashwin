@@ -1,12 +1,13 @@
-import { Box, Button, Card, Text } from "@chakra-ui/react";
+import { Box, Button, Card, Textarea } from "@chakra-ui/react";
 import { FaTrash } from "react-icons/fa";
 import { IoMdAdd } from "react-icons/io";
 import CardItem from "./CardItem";
-import CardModal from "./CardModal";
+import { IoClose } from "react-icons/io5";
+import AddCard from "./AddCard";
 
-const CardList = ({ card }) => {
+const CardList = ({ card, isActive, onCardClick }) => {
   return (
-    <Card.Root width="100%" rounded="2xl" bg={"gray.200"}>
+    <Card.Root width="100%" rounded="2xl" bg={"gray.200"} height="100%">
       <Card.Header>
         <Box
           display="flex"
@@ -24,9 +25,17 @@ const CardList = ({ card }) => {
       </Card.Body>
 
       <Card.Footer>
-        <Button variant="ghost" w="100%" _hover={{ bg: "gray.300" }}>
-          <IoMdAdd /> Add a card
-        </Button>
+        {isActive && <AddCard onCardClick={onCardClick} />}
+        {!isActive && (
+          <Button
+            variant="ghost"
+            w="100%"
+            _hover={{ bg: "gray.300" }}
+            onClick={() => onCardClick(card.id)}
+          >
+            <IoMdAdd /> Add a card
+          </Button>
+        )}
       </Card.Footer>
     </Card.Root>
   );

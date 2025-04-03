@@ -4,7 +4,7 @@ import { useParams } from "react-router";
 import Error from "../Error";
 import Loading from "../Loading";
 import CardList from "./CardList";
-import { Box, Container, HStack } from "@chakra-ui/react";
+import { Box, Container } from "@chakra-ui/react";
 
 const reducer = (state, action) => {
   const { cards, lists } = action;
@@ -21,6 +21,7 @@ const Cards = () => {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [activeCardId, setActiveCardId] = useState(null); // Track the active card ID
 
   useEffect(() => {
     const fetchCards = async () => {
@@ -40,20 +41,24 @@ const Cards = () => {
     fetchCards();
   }, [id]);
 
-  console.log(cardsData);
+  const handleCardClick = (cardId) => {
+    setActiveCardId((prevId) => (prevId === cardId ? null : cardId)); // Toggle the clicked card
+  };
 
   return (
     <>
       {error && <Error error={error} />}
       {loading && <Loading />}
-      {/* {!loading && !error && (
-
-      )} */}
 
       <Container mt="100px">
         <Box display="flex" gap={5}>
           {cardsData.map((card) => (
-            <CardList card={card} key={card.id} />
+            <CardList
+              card={card}
+              key={card.id}
+              isActive={activeCardId === card.id}
+              onCardClick={handleCardClick}
+            />
           ))}
         </Box>
       </Container>
