@@ -10,6 +10,7 @@ const AddCard = ({
 }) => {
   const [input, setInput] = useState("");
 
+  // Handle add card function
   const handleAddData = () => {
     handleAdd(input);
     setInput("");

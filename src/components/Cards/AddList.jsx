@@ -9,17 +9,18 @@ import { useBoardList } from "@/context/BoardListContext";
 
 const AddList = ({ boardId }) => {
   const [showAddList, setShowAddList] = useState(false);
-  const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   const { setCardsData } = useBoardList();
 
-  const handleAddList = async () => {
+  // Handle add list function
+  const handleAddList = async (input) => {
     if (!input.trim()) return;
-    setLoading(true);
 
     try {
+      setLoading(true);
+
       const { data } = await apiV1Instance.post(
         `/lists?name=${input}&idBoard=${boardId}`
       );
@@ -28,12 +29,11 @@ const AddList = ({ boardId }) => {
         type: "ADD_LIST",
         payload: data,
       });
-      setLoading(false);
-      setShowAddList(false);
-      setInput("");
     } catch (error) {
       setError(error.message || "Something went wrong");
+    } finally {
       setLoading(false);
+      setShowAddList(false);
     }
   };
 
@@ -41,6 +41,7 @@ const AddList = ({ boardId }) => {
     <Card.Root width="400px" rounded="2xl" bg={"gray.200"} height="100%">
       {loading && <Loading height="100px" />}
       {error && <Error error={error} />}
+
       {!loading && !error && (
         <Card.Body>
           {showAddList ? (
@@ -48,8 +49,6 @@ const AddList = ({ boardId }) => {
               placeholder="Enter list name..."
               buttonTitle="Add list"
               onCardClick={setShowAddList}
-              setText={setInput}
-              text={input}
               handleAdd={handleAddList}
             />
           ) : (
