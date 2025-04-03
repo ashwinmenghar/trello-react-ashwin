@@ -1,0 +1,9 @@
+{
+    "redirects": [
+        {
+            "source": "/",
+            "destination": "/boards",
+            "status": 301
+        }
+    ]
+}
