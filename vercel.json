@@ -3,7 +3,7 @@
         {
             "source": "/",
             "destination": "/boards",
-            "status": 301
+            "permanent": true
         }
     ]
 }
