@@ -21,15 +21,16 @@ const CreateBoard = () => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const { fetchBoards } = useBoard();
+  const { setBoards } = useBoard();
 
   const addBoard = async () => {
     if (!input.trim()) return;
     try {
       setLoading(true);
 
-      await apiV1Instance.post(`boards/?name=${input}`);
-      fetchBoards();
+      const { data } = await apiV1Instance.post(`boards/?name=${input}`);
+
+      setBoards((prev) => [data, ...prev]);
       setInput("");
 
       setLoading(false);
