@@ -1,15 +1,20 @@
 import { Box, Button, Textarea } from "@chakra-ui/react";
-import React from "react";
+import React, { useState } from "react";
 import { IoClose } from "react-icons/io5";
 
 const AddCard = ({
   onCardClick,
   placeholder = "Enter a title",
   buttonTitle = "Add card",
-  setText,
-  text,
   handleAdd,
 }) => {
+  const [input, setInput] = useState("");
+
+  const handleAddData = () => {
+    handleAdd(input);
+    setInput("");
+  };
+
   return (
     <Box>
       <Textarea
@@ -21,8 +26,8 @@ const AddCard = ({
         rounded="l3"
         fontSize="16px"
         fontWeight="500"
-        value={text}
-        onChange={(e) => setText(e.target.value)}
+        value={input}
+        onChange={(e) => setInput(e.target.value)}
       />
 
       <Button
@@ -30,7 +35,7 @@ const AddCard = ({
         bg="blue.600"
         color="white"
         p="10px"
-        onClick={handleAdd}
+        onClick={handleAddData}
       >
         {buttonTitle}
       </Button>
