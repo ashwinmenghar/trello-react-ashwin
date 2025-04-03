@@ -25,7 +25,9 @@ export const BoardProvider = ({ children }) => {
   }, []);
 
   return (
-    <BoardContext.Provider value={{ boards, loading, error, fetchBoards,setBoards }}>
+    <BoardContext.Provider
+      value={{ boards, loading, error, fetchBoards, setBoards }}
+    >
       {children}
     </BoardContext.Provider>
   );

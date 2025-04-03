@@ -19,7 +19,7 @@ const CardList = ({ card, isActive, onCardClick }) => {
         </Box>
       </Card.Header>
       <Card.Body gap="2">
-        {card.cardData.map((list) => (
+        {card?.cardData?.map((list) => (
           <CardItem list={list} key={list.id} />
         ))}
       </Card.Body>
