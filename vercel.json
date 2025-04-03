@@ -1,9 +1,12 @@
 {
-    "redirects": [
+    "rewrites": [
         {
-            "source": "/",
-            "destination": "/boards",
-            "permanent": true
+            "source": "/(.*)",
+            "destination": "/"
+        },
+        {
+            "source": "/:a*",
+            "destination": "/"
         }
     ]
 }
