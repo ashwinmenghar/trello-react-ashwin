@@ -3,6 +3,7 @@ import React from "react";
 import CardModal from "./CardModal";
 
 const CardItem = ({ list }) => {
+
   return (
     <Box
       bg="white"
@@ -13,7 +14,7 @@ const CardItem = ({ list }) => {
       overflowWrap="break-word"
       _hover={{ outlineStyle: "solid", outlineColor: "blue" }}
     >
-      <CardModal>{list.name}</CardModal>
+      <CardModal name={list.name} cardId={list.id} />
     </Box>
   );
 };

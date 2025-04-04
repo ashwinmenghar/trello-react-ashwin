@@ -1,20 +1,54 @@
+import { getCheckListsInCard } from "@/helper";
 import {
+  Box,
   Button,
+  Checkbox,
   CloseButton,
   Dialog,
+  Field,
   For,
+  Heading,
   HStack,
+  Input,
+  Popover,
   Portal,
+  Progress,
+  Stack,
   Text,
+  Textarea,
 } from "@chakra-ui/react";
+import { useState } from "react";
+import { IoMdCheckboxOutline } from "react-icons/io";
+import Loading from "../Loading";
+import CheckList from "../checklist/CheckList";
+import AddChecklist from "./AddChecklist";
 
-const CardModal = ({ children }) => {
+const CardModal = ({ name, cardId }) => {
+  const [checklist, setChecklist] = useState([]);
+
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleCardDialog = async () => {
+    try {
+      setLoading(true);
+      const { data } = await getCheckListsInCard(cardId);
+      setChecklist(data);
+    } catch (error) {
+      setError(error.message || "Something went wrong");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // console.log(checklist);
+
   return (
     <HStack wrap="wrap" gap="4">
       <Dialog.Root placement="center" motionPreset="slide-in-bottom">
         <Dialog.Trigger asChild>
-          <Text p="10px" w="100%">
-            {children}
+          <Text p="10px" w="100%" onClick={handleCardDialog}>
+            {name}
           </Text>
         </Dialog.Trigger>
         <Portal>
@@ -22,20 +56,33 @@ const CardModal = ({ children }) => {
           <Dialog.Positioner>
             <Dialog.Content>
               <Dialog.Header>
-                <Dialog.Title>Dialog Title</Dialog.Title>
+                <Dialog.Title>{name}</Dialog.Title>
               </Dialog.Header>
               <Dialog.Body>
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                </p>
+                {loading && <Loading height="200px" />}
+                {error && <Error error={error} />}
+
+                {!loading && (
+                  <AddChecklist
+                    setLoading={setLoading}
+                    cardId={cardId}
+                    setError={setError}
+                    setChecklist={setChecklist}
+                  />
+                )}
+
+                {checklist.map((list) => (
+                  <CheckList
+                    checkList={list}
+                    // name={list.name}
+                    // cardId={list.idCard}
+                    cardId={cardId}
+                    key={list.id}
+                    onUpdateCheckItems={setChecklist}
+                  />
+                ))}
               </Dialog.Body>
-              <Dialog.Footer>
-                <Dialog.ActionTrigger asChild>
-                  <Button variant="outline">Cancel</Button>
-                </Dialog.ActionTrigger>
-                <Button>Save</Button>
-              </Dialog.Footer>
+
               <Dialog.CloseTrigger asChild>
                 <CloseButton size="sm" />
               </Dialog.CloseTrigger>
