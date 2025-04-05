@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { apiV1Instance } from "@/api";
+import { getBoards } from "@/helper";
 
 const BoardContext = createContext();
 
@@ -8,13 +8,15 @@ export const BoardProvider = ({ children }) => {
   const [boards, setBoards] = useState([]);
   const [error, setError] = useState("");
 
+  // Get all boards
   const fetchBoards = async () => {
     try {
       setLoading(true);
-      const res = await apiV1Instance.get("/members/me/boards");
-      setBoards(res?.data);
+
+      const getAllBoards = await getBoards();
+      setBoards(getAllBoards);
     } catch (error) {
-      setError(error.message || "Something went wrong");
+      setError(error);
     } finally {
       setLoading(false);
     }
@@ -26,7 +28,7 @@ export const BoardProvider = ({ children }) => {
 
   return (
     <BoardContext.Provider
-      value={{ boards, loading, error, fetchBoards, setBoards }}
+      value={{ boards, loading, error, setBoards }}
     >
       {children}
     </BoardContext.Provider>

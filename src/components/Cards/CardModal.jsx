@@ -13,11 +13,13 @@ const CardModal = ({ name, cardId }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+  // Handle card dialog
   const handleCardDialog = async () => {
     try {
       setLoading(true);
       const { data } = await getCheckListsInCard(cardId);
-      setChecklists(data);
+
+      setChecklists({ type: "SET_CHECKLISTS", payload: data });
     } catch (error) {
       setError(error.message || "Something went wrong");
     } finally {

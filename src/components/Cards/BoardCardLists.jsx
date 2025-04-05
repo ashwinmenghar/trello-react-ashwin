@@ -26,7 +26,7 @@ const BoardCardLists = () => {
           {cardsData.map((list) => (
             <CardList
               key={list.id}
-              card={list}
+              list={list}
               isActive={activeCardId === list.id}
               onCardClick={handleCardClick}
             />

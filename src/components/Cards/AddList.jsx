@@ -2,10 +2,10 @@ import { Button, Card } from "@chakra-ui/react";
 import React, { useState } from "react";
 import AddCard from "./AddCard";
 import { IoMdAdd } from "react-icons/io";
-import { apiV1Instance } from "@/api";
 import Error from "../Error";
 import Loading from "../Loading";
 import { useBoardList } from "@/context/BoardListContext";
+import { createList } from "@/helper";
 
 const AddList = ({ boardId }) => {
   const [showAddList, setShowAddList] = useState(false);
@@ -21,13 +21,10 @@ const AddList = ({ boardId }) => {
     try {
       setLoading(true);
 
-      const { data } = await apiV1Instance.post(
-        `/lists?name=${input}&idBoard=${boardId}`
-      );
-
+      const newList = await createList(input, boardId);
       setCardsData({
         type: "ADD_LIST",
-        payload: data,
+        payload: newList,
       });
     } catch (error) {
       setError(error.message || "Something went wrong");

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Box } from "@chakra-ui/react";
-import { apiV1Instance } from "@/api";
 import Loading from "../Loading";
 import Error from "../Error";
 import CheckListHeader from "./CheckListHeader";
@@ -9,6 +8,7 @@ import CheckListProgress from "./CheckListProgress";
 import CheckListItems from "./CheckListItems";
 import CheckListNewItemForm from "./CheckListNewItemForm";
 import { useChecklist } from "@/context/ChecklistContext";
+import { createItem, deleteCheckList, toggleCheckList } from "@/helper";
 
 const CheckList = ({ checkList, cardId }) => {
   const { setChecklists } = useChecklist();
@@ -17,9 +17,7 @@ const CheckList = ({ checkList, cardId }) => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const [isActive, setIsActive] = useState(false);
-  const [itemText, setItemText] = useState("");
-
+  // Calculate total percentage
   const totalPercentage = checkItems.length
     ? Math.floor(
         (checkItems.filter(({ state }) => state === "complete").length /
@@ -28,60 +26,65 @@ const CheckList = ({ checkList, cardId }) => {
       )
     : 0;
 
+  // Handle toggle check item
   const handleToggleCheckItem = async (checkItemId, state) => {
     try {
       setLoading(true);
-      const { data } = await apiV1Instance.put(
-        `/cards/${cardId}/checkItem/${checkItemId}`,
-        {
-          state: state === "complete" ? "incomplete" : "complete",
-        }
+
+      const updatedCheckList = await toggleCheckList(
+        cardId,
+        checkItemId,
+        state
       );
-      setChecklists((prevCheckList) =>
-        prevCheckList.map((checkList) => ({
-          ...checkList,
-          checkItems: checkList.checkItems.map((item) =>
-            item.id === checkItemId ? { ...item, state: data.state } : item
-          ),
-        }))
-      );
+
+      setChecklists({
+        type: "UPDATE_CHECKITEM",
+        payload: {
+          checklistId: id,
+          checkItemId,
+          state: updatedCheckList.state,
+        },
+      });
     } catch (error) {
-      setError(error.message || "Something went wrong");
+      setError(error);
     } finally {
       setLoading(false);
     }
   };
 
-  const handleAddItem = async () => {
+  // Handle add new item
+  const handleAddItem = async (itemText) => {
     try {
       setLoading(true);
-      const { data } = await apiV1Instance.post(
-        `/checklists/${id}/checkItems?name=${itemText}`
-      );
-      setChecklists((prevChecklists) =>
-        prevChecklists.map((cl) =>
-          cl.id === id ? { ...cl, checkItems: [...cl.checkItems, data] } : cl
-        )
-      );
+      const newItem = await createItem(id, itemText);
 
-      setItemText("");
+      setChecklists({
+        type: "ADD_CHECKITEM",
+        payload: {
+          newItem,
+          checklistId: id,
+        },
+      });
     } catch (error) {
-      setError(error.message || "Something went wrong");
+      setError(error);
     } finally {
+      // setItemText("");
       setLoading(false);
     }
   };
 
+  // Handle delete check list
   const handleDeleteCheckList = async () => {
     try {
       setLoading(true);
-      await apiV1Instance.delete(`/checklists/${id}`);
+      await deleteCheckList(id);
 
-      setChecklists((prevCheckList) =>
-        prevCheckList.filter((cl) => cl.id != id)
-      );
+      setChecklists({
+        type: "DELETE_CHECKLIST",
+        payload: id,
+      });
     } catch (error) {
-      setError(error.message || "Something went wrong");
+      setError(error);
     } finally {
       setLoading(false);
     }
@@ -100,15 +103,9 @@ const CheckList = ({ checkList, cardId }) => {
       <CheckListItems
         items={checkItems}
         onToggle={handleToggleCheckItem}
-        checkListId={id}
+        checklistId={id}
       />
-      <CheckListNewItemForm
-        isActive={isActive}
-        itemText={itemText}
-        setItemText={setItemText}
-        setIsActive={setIsActive}
-        handleAddItem={handleAddItem}
-      />
+      <CheckListNewItemForm handleAddItem={handleAddItem} />
     </Box>
   );
 };

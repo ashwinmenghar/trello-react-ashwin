@@ -8,11 +8,13 @@ const AddChecklist = ({ setLoading, cardId, setError }) => {
   const [checklistText, setChecklistText] = useState("");
   const { setChecklists } = useChecklist();
 
+  // Handle Add checklist
   const handleAddCheckList = async () => {
     try {
       setLoading(true);
       const { data } = await addCheckList(checklistText, cardId);
-      setChecklists((prev) => [...prev, data]);
+
+      setChecklists({ type: "ADD_CHECKLIST", payload: data });
     } catch (error) {
       setError(error.message || "Something went wrong");
     } finally {

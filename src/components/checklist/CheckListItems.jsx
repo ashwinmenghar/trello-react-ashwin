@@ -1,12 +1,12 @@
-import { apiV1Instance } from "@/api";
 import { useChecklist } from "@/context/ChecklistContext";
 import { Box, Checkbox } from "@chakra-ui/react";
 import { useState } from "react";
 import { MdDelete } from "react-icons/md";
 import Loading from "../Loading";
 import Error from "../Error";
+import { deleteItem } from "@/helper";
 
-const CheckListItems = ({ items, onToggle, checkListId }) => {
+const CheckListItems = ({ items, onToggle, checklistId }) => {
   const { setChecklists } = useChecklist();
 
   const [error, setError] = useState(null);
@@ -16,18 +16,17 @@ const CheckListItems = ({ items, onToggle, checkListId }) => {
   const handleDeleteItem = async (checkItemId) => {
     try {
       setLoading(true);
-      await apiV1Instance.delete(
-        `/checklists/${checkListId}/checkItems/${checkItemId}`
-      );
+      await deleteItem(checklistId, checkItemId);
 
-      setChecklists((prevCheckList) =>
-        prevCheckList.map((cl) => ({
-          ...cl,
-          checkItems: cl.checkItems.filter((item) => item.id != checkItemId),
-        }))
-      );
+      setChecklists({
+        type: "DELETE_CHECKITEM",
+        payload: {
+          checklistId,
+          checkItemId,
+        },
+      });
     } catch (error) {
-      setError(error.message || "Something went wrong");
+      setError(error);
     } finally {
       setLoading(false);
     }
@@ -35,6 +34,8 @@ const CheckListItems = ({ items, onToggle, checkListId }) => {
 
   if (loading) return <Loading height="100px" />;
   if (error) return <Error error={error} />;
+
+  console.log(items);
 
   return (
     <Box display="flex" flexDirection="column">
@@ -49,9 +50,7 @@ const CheckListItems = ({ items, onToggle, checkListId }) => {
           _hover={{ bg: "gray.100", rounded: "l3" }}
         >
           <Checkbox.HiddenInput />
-          <Checkbox.Control
-            onClick={() => onToggle(item.id, item.state)} // Only toggle when checkbox box is clicked
-          />
+          <Checkbox.Control onClick={() => onToggle(item.id, item.state)} />
           <Checkbox.Label
             textDecoration={item.state === "complete" ? "line-through" : "none"}
             w="100%"

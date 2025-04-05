@@ -1,4 +1,3 @@
-import { apiV1Instance } from "@/api";
 import { useBoard } from "../../context/BoardContext";
 import {
   Button,
@@ -13,6 +12,7 @@ import {
 import { useState } from "react";
 import Loading from "../Loading";
 import Error from "../Error";
+import { createBoard } from "@/helper";
 
 const CreateBoard = () => {
   const [input, setInput] = useState("");
@@ -23,21 +23,22 @@ const CreateBoard = () => {
 
   const { setBoards } = useBoard();
 
+  // Add new board
   const addBoard = async () => {
     if (!input.trim()) return;
+
     try {
       setLoading(true);
 
-      const { data } = await apiV1Instance.post(`boards/?name=${input}`);
+      const newBoard = await createBoard(input);
+      setBoards((prev) => [newBoard, ...prev]);
 
-      setBoards((prev) => [data, ...prev]);
       setInput("");
-
-      setLoading(false);
       setIsOpen(false);
     } catch (error) {
+      setError(error.message);
+    } finally {
       setLoading(false);
-      setError(error.message || "Something went wrong");
     }
   };
 

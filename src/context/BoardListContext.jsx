@@ -5,8 +5,9 @@ import {
   useReducer,
   useState,
 } from "react";
-import { apiV1Instance } from "@/api";
+
 import { useParams } from "react-router";
+import { fetchBoardListAndCards } from "@/helper";
 
 const BoardListContext = createContext();
 
@@ -63,12 +64,10 @@ export const BoardListProvider = ({ children }) => {
       setLoading(true);
       setCardsData({ type: "RESET" });
 
-      const lists = await apiV1Instance.get(`/boards/${id}/lists`);
-      const cards = await apiV1Instance.get(`/boards/${id}/cards`);
-
+      const { lists, cards } = await fetchBoardListAndCards(id);
       setCardsData({
         type: "SET_DATA",
-        payload: { lists: lists.data, cards: cards.data },
+        payload: { lists, cards },
       });
     } catch (error) {
       setError(error.message || "Something went wrong");
