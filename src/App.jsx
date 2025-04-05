@@ -4,6 +4,7 @@ import BoardCardLists from "./components/Cards/BoardCardLists";
 import { BoardProvider } from "./context/BoardContext";
 import { BoardListProvider } from "./context/BoardListContext";
 import Layout from "./Layout";
+import { ChecklistProvider } from "./context/ChecklistContext";
 
 function App() {
   return (
@@ -22,7 +23,9 @@ function App() {
             path=":id"
             element={
               <BoardListProvider>
-                <BoardCardLists />
+                <ChecklistProvider>
+                  <BoardCardLists />
+                </ChecklistProvider>
               </BoardListProvider>
             }
           />
