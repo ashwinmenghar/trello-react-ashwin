@@ -1,16 +1,18 @@
+import { useChecklist } from "@/context/ChecklistContext";
 import { addCheckList } from "@/helper";
 import { Box, Button, Dialog, Input, Popover } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { IoMdCheckboxOutline } from "react-icons/io";
 
-const AddChecklist = ({ setLoading, cardId, setError, setChecklist }) => {
+const AddChecklist = ({ setLoading, cardId, setError }) => {
   const [checklistText, setChecklistText] = useState("");
+  const { setChecklists } = useChecklist();
 
   const handleAddCheckList = async () => {
     try {
       setLoading(true);
       const { data } = await addCheckList(checklistText, cardId);
-      setChecklist((prev) => [...prev, data]);
+      setChecklists((prev) => [...prev, data]);
     } catch (error) {
       setError(error.message || "Something went wrong");
     } finally {

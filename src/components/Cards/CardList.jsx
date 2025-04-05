@@ -42,9 +42,7 @@ const CardList = ({ card, isActive, onCardClick }) => {
   const handleRemoveList = async () => {
     try {
       setLoading(true);
-
-      const data = await apiV1Instance.put(`/lists/${card.id}?closed=true`);
-      console.log(data);
+      await apiV1Instance.put(`/lists/${card.id}?closed=true`);
 
       setCardsData({
         type: "REMOVE_LIST",

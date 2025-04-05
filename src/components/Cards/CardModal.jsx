@@ -1,22 +1,5 @@
 import { getCheckListsInCard } from "@/helper";
-import {
-  Box,
-  Button,
-  Checkbox,
-  CloseButton,
-  Dialog,
-  Field,
-  For,
-  Heading,
-  HStack,
-  Input,
-  Popover,
-  Portal,
-  Progress,
-  Stack,
-  Text,
-  Textarea,
-} from "@chakra-ui/react";
+import { CloseButton, Dialog, HStack, Portal, Text } from "@chakra-ui/react";
 import { useState } from "react";
 import { IoMdCheckboxOutline } from "react-icons/io";
 import Loading from "../Loading";
@@ -66,7 +49,6 @@ const CardModal = ({ name, cardId }) => {
                     setLoading={setLoading}
                     cardId={cardId}
                     setError={setError}
-                    setChecklist={setChecklists}
                   />
                 )}
 
