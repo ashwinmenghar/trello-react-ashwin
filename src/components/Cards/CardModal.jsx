@@ -1,7 +1,6 @@
 import { getCheckListsInCard } from "@/helper";
 import { CloseButton, Dialog, HStack, Portal, Text } from "@chakra-ui/react";
 import { useState } from "react";
-import { IoMdCheckboxOutline } from "react-icons/io";
 import Loading from "../Loading";
 import CheckList from "../checklist/CheckList";
 import AddChecklist from "./AddChecklist";
@@ -16,9 +15,10 @@ const CardModal = ({ name, cardId }) => {
   // Handle card dialog
   const handleCardDialog = async () => {
     try {
+      setChecklists({ type: "RESET" });
       setLoading(true);
-      const { data } = await getCheckListsInCard(cardId);
 
+      const { data } = await getCheckListsInCard(cardId);
       setChecklists({ type: "SET_CHECKLISTS", payload: data });
     } catch (error) {
       setError(error.message || "Something went wrong");

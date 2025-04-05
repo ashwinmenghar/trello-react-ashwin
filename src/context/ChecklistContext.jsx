@@ -48,6 +48,9 @@ const checklistReducer = (state, action) => {
           : cl
       );
 
+    case "RESET":
+      return [];
+
     default:
       return state;
   }
