@@ -22,9 +22,10 @@ import { IoMdCheckboxOutline } from "react-icons/io";
 import Loading from "../Loading";
 import CheckList from "../checklist/CheckList";
 import AddChecklist from "./AddChecklist";
+import { useChecklist } from "@/context/ChecklistContext";
 
 const CardModal = ({ name, cardId }) => {
-  const [checklist, setChecklist] = useState([]);
+  const { checklists, setChecklists } = useChecklist();
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -33,15 +34,13 @@ const CardModal = ({ name, cardId }) => {
     try {
       setLoading(true);
       const { data } = await getCheckListsInCard(cardId);
-      setChecklist(data);
+      setChecklists(data);
     } catch (error) {
       setError(error.message || "Something went wrong");
     } finally {
       setLoading(false);
     }
   };
-
-  // console.log(checklist);
 
   return (
     <HStack wrap="wrap" gap="4">
@@ -67,19 +66,12 @@ const CardModal = ({ name, cardId }) => {
                     setLoading={setLoading}
                     cardId={cardId}
                     setError={setError}
-                    setChecklist={setChecklist}
+                    setChecklist={setChecklists}
                   />
                 )}
 
-                {checklist.map((list) => (
-                  <CheckList
-                    checkList={list}
-                    // name={list.name}
-                    // cardId={list.idCard}
-                    cardId={cardId}
-                    key={list.id}
-                    onUpdateCheckItems={setChecklist}
-                  />
+                {checklists.map((list) => (
+                  <CheckList checkList={list} cardId={cardId} key={list.id} />
                 ))}
               </Dialog.Body>
 
