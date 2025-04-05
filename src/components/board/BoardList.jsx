@@ -7,11 +7,11 @@ import { useBoard } from "../../context/BoardContext";
 
 const BoardList = () => {
   const { boards, loading, error } = useBoard();
+
+  if (loading) return <Loading />;
+  if (error) return <Error error={error} />;
   return (
     <>
-      {error && <Error error={error} />}
-      {loading && <Loading />}
-
       <Container>
         <Box display="flex" mt="5rem" flexWrap="wrap">
           <CreateBoard />
