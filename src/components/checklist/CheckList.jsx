@@ -8,8 +8,10 @@ import CheckListProgress from "./CheckListProgress";
 
 import CheckListItems from "./CheckListItems";
 import CheckListNewItemForm from "./CheckListNewItemForm";
+import { useChecklist } from "@/context/ChecklistContext";
 
-const CheckList = ({ checkList, onUpdateCheckItems, cardId }) => {
+const CheckList = ({ checkList, cardId }) => {
+  const { setChecklists } = useChecklist();
   const { checkItems, name, id } = checkList;
 
   const [error, setError] = useState(null);
@@ -26,7 +28,7 @@ const CheckList = ({ checkList, onUpdateCheckItems, cardId }) => {
       )
     : 0;
 
-  const handleCheckedInput = async (checkItemId, state) => {
+  const handleToggleCheckItem = async (checkItemId, state) => {
     try {
       setLoading(true);
       const { data } = await apiV1Instance.put(
@@ -35,7 +37,7 @@ const CheckList = ({ checkList, onUpdateCheckItems, cardId }) => {
           state: state === "complete" ? "incomplete" : "complete",
         }
       );
-      onUpdateCheckItems((prevCheckList) =>
+      setChecklists((prevCheckList) =>
         prevCheckList.map((checkList) => ({
           ...checkList,
           checkItems: checkList.checkItems.map((item) =>
@@ -56,13 +58,12 @@ const CheckList = ({ checkList, onUpdateCheckItems, cardId }) => {
       const { data } = await apiV1Instance.post(
         `/checklists/${id}/checkItems?name=${itemText}`
       );
-      onUpdateCheckItems((prevCheckList) =>
-        prevCheckList.map((checkList) =>
-          checkList.id === id
-            ? { ...checkList, checkItems: [...checkList.checkItems, data] }
-            : checkList
+      setChecklists((prevChecklists) =>
+        prevChecklists.map((cl) =>
+          cl.id === id ? { ...cl, checkItems: [...cl.checkItems, data] } : cl
         )
       );
+
       setItemText("");
     } catch (error) {
       setError(error.message || "Something went wrong");
@@ -71,25 +72,44 @@ const CheckList = ({ checkList, onUpdateCheckItems, cardId }) => {
     }
   };
 
+  const handleDeleteCheckList = async () => {
+    try {
+      setLoading(true);
+      await apiV1Instance.delete(`/checklists/${id}`);
+
+      setChecklists((prevCheckList) =>
+        prevCheckList.filter((cl) => cl.id != id)
+      );
+    } catch (error) {
+      setError(error.message || "Something went wrong");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) return <Loading height="100px" />;
+  if (error) return <Error error={error} />;
+
   return (
-    <>
-      {loading && <Loading height="100px" />}
-      {error && <Error error={error} />}
-      {!loading && !error && (
-        <Box mt="10" px="2" py="1">
-          <CheckListHeader name={name} />
-          <CheckListProgress percentage={totalPercentage} />
-          <CheckListItems items={checkItems} onToggle={handleCheckedInput} />
-          <CheckListNewItemForm
-            isActive={isActive}
-            itemText={itemText}
-            setItemText={setItemText}
-            setIsActive={setIsActive}
-            handleAddItem={handleAddItem}
-          />
-        </Box>
-      )}
-    </>
+    <Box mt="10" px="2" py="1">
+      <CheckListHeader
+        name={name}
+        handleDeleteCheckList={handleDeleteCheckList}
+      />
+      <CheckListProgress percentage={totalPercentage} />
+      <CheckListItems
+        items={checkItems}
+        onToggle={handleToggleCheckItem}
+        checkListId={id}
+      />
+      <CheckListNewItemForm
+        isActive={isActive}
+        itemText={itemText}
+        setItemText={setItemText}
+        setIsActive={setIsActive}
+        handleAddItem={handleAddItem}
+      />
+    </Box>
   );
 };
 
