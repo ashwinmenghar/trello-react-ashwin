@@ -13,7 +13,11 @@ export const fetchCards = createAsyncThunk("board/fetchCards", async (id) => {
 export const addCard = createAsyncThunk(
   "cards/addCard",
   async ({ name, listId }) => {
-    return await createCard(name, listId);
+    try {
+      return await createCard(name, listId);
+    } catch (error) {
+      throw new Error(error.message);
+    }
   }
 );
 
@@ -27,6 +31,10 @@ export const removeList = createAsyncThunk(
 export const addList = createAsyncThunk(
   "lists/addList",
   async ({ input, boardId }) => {
-    return await createList(input, boardId);
+    try {
+      return await createList(input, boardId);
+    } catch (error) {
+      throw new Error(error.message);
+    }
   }
 );
