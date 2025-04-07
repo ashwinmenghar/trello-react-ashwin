@@ -33,11 +33,11 @@ const CreateBoard = () => {
       const newBoard = await createBoard(input);
       setBoards((prev) => [newBoard, ...prev]);
 
-      setInput("");
       setIsOpen(false);
     } catch (error) {
-      setError(error.message);
+      setError(error);
     } finally {
+      setInput("");
       setLoading(false);
     }
   };

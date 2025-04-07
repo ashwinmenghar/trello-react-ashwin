@@ -21,7 +21,7 @@ const CardModal = ({ name, cardId }) => {
       const { data } = await getCheckListsInCard(cardId);
       setChecklists({ type: "SET_CHECKLISTS", payload: data });
     } catch (error) {
-      setError(error.message || "Something went wrong");
+      setError(error);
     } finally {
       setLoading(false);
     }

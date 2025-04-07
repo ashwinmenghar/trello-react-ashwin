@@ -35,8 +35,6 @@ const CheckListItems = ({ items, onToggle, checklistId }) => {
   if (loading) return <Loading height="100px" />;
   if (error) return <Error error={error} />;
 
-  console.log(items);
-
   return (
     <Box display="flex" flexDirection="column">
       {items.map((item) => (
@@ -62,14 +60,7 @@ const CheckListItems = ({ items, onToggle, checklistId }) => {
             >
               {item.name}
 
-              <Box
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  handleDeleteItem(item.id);
-                }}
-                cursor="pointer"
-              >
+              <Box cursor="pointer" onClick={() => handleDeleteItem(item.id)}>
                 <MdDelete size="20px" />
               </Box>
             </Box>

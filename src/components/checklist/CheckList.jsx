@@ -68,7 +68,6 @@ const CheckList = ({ checkList, cardId }) => {
     } catch (error) {
       setError(error);
     } finally {
-      // setItemText("");
       setLoading(false);
     }
   };

@@ -70,7 +70,7 @@ export const BoardListProvider = ({ children }) => {
         payload: { lists, cards },
       });
     } catch (error) {
-      setError(error.message || "Something went wrong");
+      setError(error);
     } finally {
       setLoading(false);
     }

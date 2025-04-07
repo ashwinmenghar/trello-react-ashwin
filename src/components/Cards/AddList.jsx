@@ -27,7 +27,7 @@ const AddList = ({ boardId }) => {
         payload: newList,
       });
     } catch (error) {
-      setError(error.message || "Something went wrong");
+      setError(error);
     } finally {
       setLoading(false);
       setShowAddList(false);

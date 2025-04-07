@@ -8,9 +8,10 @@ import { useBoardList } from "../../context/BoardListContext";
 import { useParams } from "react-router";
 
 const BoardCardLists = () => {
+  const { id } = useParams();
+
   const { cardsData, loading, error } = useBoardList();
   const [activeCardId, setActiveCardId] = useState(null);
-  const { id } = useParams();
 
   const handleCardClick = (cardId) => {
     setActiveCardId((prevId) => (prevId === cardId ? null : cardId));
