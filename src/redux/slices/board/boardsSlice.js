@@ -1,15 +1,5 @@
-import { createBoard, getBoards } from "@/helper";
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-
-// Async thunk to fetch all boards
-export const fetchBoards = createAsyncThunk("boards/fetchBoards", async () => {
-  return await getBoards();
-});
-
-// Async thunk to add a board
-export const addBoard = createAsyncThunk("boards/addBoard", async (name) => {
-  return await createBoard(name);
-});
+import { createSlice } from "@reduxjs/toolkit";
+import { addBoard, fetchBoards } from "./thunks/boardsThunks";
 
 // Initial state
 const initialState = {
@@ -23,14 +13,7 @@ const initialState = {
 export const boardSlice = createSlice({
   name: "boards",
   initialState,
-  reducers: {
-    // clearAddBoardError: (state) => {
-    //   state.status.add.error = null;
-    // },
-    // clearFetchBoardsError: (state) => {
-    //   state.status.fetch.error = null;
-    // },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(fetchBoards.pending, (state) => {
@@ -61,13 +44,6 @@ export const boardSlice = createSlice({
       });
   },
 });
-
-// Export actions
-export const {
-  clearAddBoardError,
-  clearFetchBoardsError,
-  clearDeleteBoardError,
-} = boardSlice.actions;
 
 // Export reducer
 export default boardSlice.reducer;
