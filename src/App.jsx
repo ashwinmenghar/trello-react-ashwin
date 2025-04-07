@@ -1,10 +1,11 @@
 import { BrowserRouter, Route, Routes } from "react-router";
 import BoardList from "./components/board/BoardList";
-import BoardCardLists from "./components/Cards/BoardCardLists";
+import BoardCardLists from "./components/cards/BoardCardLists";
 import { BoardProvider } from "./context/BoardContext";
 import { BoardListProvider } from "./context/BoardListContext";
 import Layout from "./Layout";
 import { ChecklistProvider } from "./context/ChecklistContext";
+
 
 function App() {
   return (

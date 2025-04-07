@@ -1,26 +1,32 @@
-import React from "react";
-import { Box, Center, Container, Stack } from "@chakra-ui/react";
+import React, { useEffect } from "react";
+import { Box, Container } from "@chakra-ui/react";
 import CreateBoard from "./CreateBoard";
 import Board from "./Board";
 import Loading from "../Loading";
-import { useBoard } from "../../context/BoardContext";
+import Error from "../Error";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchBoards } from "@/redux/slices/board";
 
 const BoardList = () => {
-  const { boards, loading, error } = useBoard();
+  const { boards, status } = useSelector((state) => state.board);
+  const dispatch = useDispatch();
 
-  if (loading) return <Loading />;
-  if (error) return <Error error={error} />;
+  useEffect(() => {
+    dispatch(fetchBoards());
+  }, []);
+
+  if (status.fetch.loading) return <Loading />;
+  if (status.fetch.error) return <Error error={status.fetch.error} />;
+
   return (
-    <>
-      <Container>
-        <Box display="flex" mt="5rem" flexWrap="wrap">
-          <CreateBoard />
-          {boards.map((board) => (
-            <Board key={board.id} board={board} />
-          ))}
-        </Box>
-      </Container>
-    </>
+    <Container>
+      <Box display="flex" mt="5rem" flexWrap="wrap" gap={4}>
+        <CreateBoard />
+        {boards.map((board) => (
+          <Board key={board.id} board={board} />
+        ))}
+      </Box>
+    </Container>
   );
 };
 

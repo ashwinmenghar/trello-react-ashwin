@@ -1,4 +1,3 @@
-import { useBoard } from "../../context/BoardContext";
 import {
   Button,
   Card,
@@ -12,34 +11,23 @@ import {
 import { useState } from "react";
 import Loading from "../Loading";
 import Error from "../Error";
-import { createBoard } from "@/helper";
+import { useDispatch, useSelector } from "react-redux";
+import { addBoard } from "@/redux/slices/board";
 
 const CreateBoard = () => {
   const [input, setInput] = useState("");
   const [isOpen, setIsOpen] = useState(false);
 
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false);
-
-  const { setBoards } = useBoard();
+  const { status } = useSelector((state) => state.board);
+  const dispatch = useDispatch();
 
   // Add new board
-  const addBoard = async () => {
+  const handleAddBoard = async () => {
     if (!input.trim()) return;
+    await dispatch(addBoard(input));
 
-    try {
-      setLoading(true);
-
-      const newBoard = await createBoard(input);
-      setBoards((prev) => [newBoard, ...prev]);
-
-      setIsOpen(false);
-    } catch (error) {
-      setError(error);
-    } finally {
-      setInput("");
-      setLoading(false);
-    }
+    setIsOpen(false);
+    setInput("");
   };
 
   return (
@@ -72,10 +60,10 @@ const CreateBoard = () => {
                 <Dialog.Header>
                   <Dialog.Title>Create board</Dialog.Title>
                 </Dialog.Header>
-                {loading && <Loading height="200px" />}
-                {error && <Error error={error} />}
+                {status.add.loading && <Loading height="200px" />}
+                {status.add.error && <Error error={status.add.error} />}
 
-                {!loading && !error && (
+                {!status.add.loading && !status.add.error && (
                   <Dialog.Body>
                     <Field.Root required>
                       <Field.Label>
@@ -99,7 +87,7 @@ const CreateBoard = () => {
                       Cancel
                     </Button>
                   </Dialog.ActionTrigger>
-                  <Button onClick={addBoard}>Save</Button>
+                  <Button onClick={handleAddBoard}>Save</Button>
                 </Dialog.Footer>
                 <Dialog.CloseTrigger asChild>
                   <CloseButton size="sm" />
