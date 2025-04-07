@@ -12,7 +12,7 @@ import { useState } from "react";
 import Loading from "../Loading";
 import Error from "../Error";
 import { useDispatch, useSelector } from "react-redux";
-import { addBoard } from "@/redux/slices/board";
+import { addBoard } from "@/redux/slices/board/thunks/boardsThunks";
 
 const CreateBoard = () => {
   const [input, setInput] = useState("");

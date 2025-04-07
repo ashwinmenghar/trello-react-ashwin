@@ -5,7 +5,7 @@ import Board from "./Board";
 import Loading from "../Loading";
 import Error from "../Error";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchBoards } from "@/redux/slices/board";
+import { fetchBoards } from "@/redux/slices/board/boardsSlice";
 
 const BoardList = () => {
   const { boards, status } = useSelector((state) => state.board);

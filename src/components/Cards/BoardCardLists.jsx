@@ -6,7 +6,7 @@ import Loading from "../Loading";
 import AddList from "./AddList";
 import { useParams } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchCards } from "@/redux/slices/cards";
+import { fetchCards } from "@/redux/slices/cards/thunks/cardsThunks";
 
 const BoardCardLists = () => {
   const { id } = useParams();

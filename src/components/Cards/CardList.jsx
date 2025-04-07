@@ -3,16 +3,16 @@ import { FaTrash } from "react-icons/fa";
 import { IoMdAdd } from "react-icons/io";
 import CardItem from "./CardItem";
 import AddCard from "./AddCard";
-import { useState } from "react";
 import Loading from "../Loading";
-import { useBoardList } from "../../context/BoardListContext";
-import { createCard, removeCard } from "@/helper";
+import { useDispatch } from "react-redux";
+import { useState } from "react";
+import { addCard, removeList } from "@/redux/slices/cards/thunks/cardsThunks";
 
 const CardList = ({ list, isActive, onCardClick }) => {
-  const { setCardsData } = useBoardList();
-
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState(null);
+
+  const dispatch = useDispatch();
 
   // Handle Add card function
   const handleAddCard = async (input) => {
@@ -21,16 +21,12 @@ const CardList = ({ list, isActive, onCardClick }) => {
     try {
       setLoading(true);
 
-      const newCard = await createCard(input, list?.id);
-      setCardsData({
-        type: "SET_CARD_DATA",
-        payload: { listId: list?.id, cardData: newCard },
-      });
+      await dispatch(addCard({ name: input, listId: list.id }));
+      onCardClick(null);
     } catch (error) {
-      setError(error.message);
+      setError(error);
     } finally {
       setLoading(false);
-      onCardClick(null);
     }
   };
 
@@ -38,12 +34,7 @@ const CardList = ({ list, isActive, onCardClick }) => {
   const handleRemoveList = async () => {
     try {
       setLoading(true);
-      await removeCard(list?.id);
-
-      setCardsData({
-        type: "REMOVE_LIST",
-        payload: { listId: list.id },
-      });
+      await dispatch(removeList(list.id));
     } catch (error) {
       setError(error.message);
     } finally {

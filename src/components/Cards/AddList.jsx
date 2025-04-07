@@ -4,15 +4,17 @@ import AddCard from "./AddCard";
 import { IoMdAdd } from "react-icons/io";
 import Error from "../Error";
 import Loading from "../Loading";
-import { useBoardList } from "@/context/BoardListContext";
-import { createList } from "@/helper";
+import { useDispatch } from "react-redux";
+import { addList } from "@/redux/slices/cards/thunks/cardsThunks";
 
 const AddList = ({ boardId }) => {
   const [showAddList, setShowAddList] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const { setCardsData } = useBoardList();
+  // const { setCardsData } = useBoardList();
+
+  const dispatch = useDispatch();
 
   // Handle add list function
   const handleAddList = async (input) => {
@@ -21,11 +23,13 @@ const AddList = ({ boardId }) => {
     try {
       setLoading(true);
 
-      const newList = await createList(input, boardId);
-      setCardsData({
-        type: "ADD_LIST",
-        payload: newList,
-      });
+      // const newList = await createList(input, boardId);
+      // setCardsData({
+      //   type: "ADD_LIST",
+      //   payload: newList,
+      // });
+
+      await dispatch(addList({ input, boardId }));
     } catch (error) {
       setError(error);
     } finally {

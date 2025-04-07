@@ -1,15 +1,13 @@
-import { fetchBoardListAndCards } from "@/helper";
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-
-// Async thunk to fetch cards and board list
-export const fetchCards = createAsyncThunk("board/fetchCards", async (id) => {
-  return await fetchBoardListAndCards(id);
-});
+import { createSlice } from "@reduxjs/toolkit";
+import { addCard, addList, fetchCards, removeList } from "./thunks/cardsThunks";
 
 // Initial state
 const initialState = {
   cards: [],
-  status: { fetch: { loading: false, error: null } },
+  status: {
+    fetch: { loading: false, error: null },
+    add: { loading: false, error: null },
+  },
 };
 
 export const cardsSlice = createSlice({
@@ -36,12 +34,29 @@ export const cardsSlice = createSlice({
       .addCase(fetchCards.rejected, (state, action) => {
         state.status.fetch.loading = false;
         state.status.fetch.error = action.error;
+      })
+
+      .addCase(addCard.fulfilled, (state, action) => {
+        state.status.add.loading = false;
+
+        const { idList } = action.payload;
+        const list = state.cards.find((l) => l.id === idList);
+        if (list) list.cardData.push(action.payload);
+      })
+
+      .addCase(removeList.fulfilled, (state, action) => {
+        state.cards = state.cards.filter((l) => l.id !== action.payload.id);
+      })
+
+      .addCase(addList.fulfilled, (state, action) => {
+        const newList = {
+          ...action.payload,
+          cardData: [],
+        };
+        state.cards = [newList, ...state.cards];
       });
   },
 });
-
-// Export actions
-// export const { getCards } = cardsSlice.actions;
 
 // Export reducer
 export default cardsSlice.reducer;
