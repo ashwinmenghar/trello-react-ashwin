@@ -49,11 +49,11 @@ export const cardsSlice = createSlice({
         const list = state.cards.find((l) => l.id === idList);
         if (list) list.cardData.push(action.payload);
       })
-      // .addCase(addCard.rejected, (state, action) => {
-      //   state.status.addCard.loading = false;
-      //   state.status.addCard.error =
-      //     action.error?.message || "Failed to add card";
-      // })
+      .addCase(addCard.rejected, (state, action) => {
+        state.status.addCard.loading = false;
+        state.status.addCard.error =
+          action.error?.message || "Failed to add card";
+      })
 
       // Remove list case
       .addCase(removeList.fulfilled, (state, action) => {

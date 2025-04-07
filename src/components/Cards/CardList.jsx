@@ -25,8 +25,6 @@ const CardList = ({ list, isActive, onCardClick }) => {
       await dispatch(addCard({ name: input, listId: list.id })).unwrap();
       onCardClick(null);
     } catch (error) {
-      // console.log("error is", error.message);
-
       setError(error.message);
     } finally {
       setLoading(false);
@@ -37,7 +35,7 @@ const CardList = ({ list, isActive, onCardClick }) => {
   const handleRemoveList = async () => {
     try {
       setLoading(true);
-      await dispatch(removeList(list.id));
+      await dispatch(removeList(list.id)).unwrap();
     } catch (error) {
       setError(error.message);
     } finally {
