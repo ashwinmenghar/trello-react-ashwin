@@ -4,36 +4,24 @@ import AddCard from "./AddCard";
 import { IoMdAdd } from "react-icons/io";
 import Error from "../Error";
 import Loading from "../Loading";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addList } from "@/redux/slices/cards/thunks/cardsThunks";
 
 const AddList = ({ boardId }) => {
   const [showAddList, setShowAddList] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-
-  // const { setCardsData } = useBoardList();
 
   const dispatch = useDispatch();
+  const { loading, error } = useSelector((state) => state.cards.status.addList);
 
   // Handle add list function
   const handleAddList = async (input) => {
     if (!input.trim()) return;
 
     try {
-      setLoading(true);
-
-      // const newList = await createList(input, boardId);
-      // setCardsData({
-      //   type: "ADD_LIST",
-      //   payload: newList,
-      // });
-
-      await dispatch(addList({ input, boardId }));
-    } catch (error) {
-      setError(error);
+      await dispatch(addList({ input, boardId })).unwrap();
+    } catch (err) {
+      console.error("Add list error:", err.message);
     } finally {
-      setLoading(false);
       setShowAddList(false);
     }
   };
@@ -41,8 +29,7 @@ const AddList = ({ boardId }) => {
   return (
     <Card.Root width="400px" rounded="2xl" bg={"gray.200"} height="100%">
       {loading && <Loading height="100px" />}
-      {error && <Error error={error} />}
-
+      {error && <Error error={error} mt="1"/>}
       {!loading && !error && (
         <Card.Body>
           {showAddList ? (

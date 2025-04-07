@@ -7,6 +7,7 @@ import Loading from "../Loading";
 import { useDispatch } from "react-redux";
 import { useState } from "react";
 import { addCard, removeList } from "@/redux/slices/cards/thunks/cardsThunks";
+import Error from "../Error";
 
 const CardList = ({ list, isActive, onCardClick }) => {
   const [loading, setLoading] = useState(false);
@@ -21,10 +22,12 @@ const CardList = ({ list, isActive, onCardClick }) => {
     try {
       setLoading(true);
 
-      await dispatch(addCard({ name: input, listId: list.id }));
+      await dispatch(addCard({ name: input, listId: list.id })).unwrap();
       onCardClick(null);
     } catch (error) {
-      setError(error);
+      // console.log("error is", error.message);
+
+      setError(error.message);
     } finally {
       setLoading(false);
     }
@@ -45,7 +48,7 @@ const CardList = ({ list, isActive, onCardClick }) => {
   return (
     <Card.Root width="400px" rounded="2xl" bg={"gray.200"} height="100%">
       {loading && <Loading height="200px" />}
-      {error && <Error error={error} />}
+      {error && <Error error={error} mt="1" />}
 
       {!loading && !error && (
         <>
