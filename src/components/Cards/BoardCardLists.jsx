@@ -9,16 +9,28 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchCards } from "@/redux/slices/cards/thunks/cardsThunks";
 
 const BoardCardLists = () => {
-  const { id } = useParams();
   const [activeCardId, setActiveCardId] = useState(null);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-  const { cards, status } = useSelector((state) => state.cards);
-  const { error, loading } = status.fetch;
-
+  const { id } = useParams();
+  const { cards } = useSelector((state) => state.cards);
   const dispatch = useDispatch();
 
+  const fetchBoardsData = async (boardId) => {
+    try {
+      setLoading(true);
+      await dispatch(fetchCards(boardId)).unwrap();
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    dispatch(fetchCards(id));
+    fetchBoardsData(id);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   const handleCardClick = (cardId) => {
@@ -30,20 +42,22 @@ const BoardCardLists = () => {
       {error && <Error error={error} />}
       {loading && <Loading />}
 
-      <Container mt="100px">
-        <Box display="flex" gap={5} w="150rem">
-          {cards.map((list) => (
-            <CardList
-              key={list.id}
-              list={list}
-              isActive={activeCardId === list.id}
-              onCardClick={handleCardClick}
-            />
-          ))}
+      {!loading && !error && (
+        <Container mt="100px">
+          <Box display="flex" gap={5} w="150rem">
+            {cards.map((list) => (
+              <CardList
+                key={list.id}
+                list={list}
+                isActive={activeCardId === list.id}
+                onCardClick={handleCardClick}
+              />
+            ))}
 
-          <AddList boardId={id} />
-        </Box>
-      </Container>
+            <AddList boardId={id} />
+          </Box>
+        </Container>
+      )}
     </>
   );
 };

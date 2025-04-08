@@ -6,9 +6,12 @@ import {
 } from "@/helper";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
-export const fetchCards = createAsyncThunk("board/fetchCards", async (id) => {
-  return await fetchBoardListAndCards(id);
-});
+export const fetchCards = createAsyncThunk(
+  "board/fetchCards",
+  async (boardId) => {
+    return await fetchBoardListAndCards(boardId);
+  }
+);
 
 export const addCard = createAsyncThunk(
   "cards/addCard",

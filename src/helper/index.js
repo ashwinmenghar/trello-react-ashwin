@@ -62,10 +62,10 @@ export const createCard = async (name, listId) => {
   }
 };
 
-export const fetchBoardListAndCards = async (id) => {
+export const fetchBoardListAndCards = async (boardId) => {
   try {
-    const lists = await apiV1Instance.get(`/boards/${id}/lists`);
-    const cards = await apiV1Instance.get(`/boards/${id}/cards`);
+    const lists = await apiV1Instance.get(`/boards/${boardId}/lists`);
+    const cards = await apiV1Instance.get(`/boards/${boardId}/cards`);
 
     return { lists: lists.data, cards: cards.data };
   } catch (error) {

@@ -4,9 +4,6 @@ import { addCard, addList, fetchCards, removeList } from "./thunks/cardsThunks";
 // Initial state
 const initialState = {
   cards: [],
-  status: {
-    fetch: { loading: false, error: null },
-  },
 };
 
 export const cardsSlice = createSlice({
@@ -15,24 +12,13 @@ export const cardsSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchCards.pending, (state) => {
-        state.status.fetch.loading = true;
-        state.status.fetch.error = null;
-      })
       .addCase(fetchCards.fulfilled, (state, action) => {
-        state.status.fetch.loading = false;
         const { cards, lists } = action.payload;
 
-        const listsWithCards = lists.map((list) => ({
+        state.cards = lists.map((list) => ({
           ...list,
           cardData: cards.filter((card) => card.idList === list.id),
         }));
-
-        state.cards = listsWithCards;
-      })
-      .addCase(fetchCards.rejected, (state, action) => {
-        state.status.fetch.loading = false;
-        state.status.fetch.error = action.error;
       })
 
       // Add card case
