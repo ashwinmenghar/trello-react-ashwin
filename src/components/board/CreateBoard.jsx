@@ -19,12 +19,13 @@ const CreateBoard = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const { status } = useSelector((state) => state.board);
+  const { loading, error } = status.add;
   const dispatch = useDispatch();
 
   // Add new board
   const handleAddBoard = async () => {
     if (!input.trim()) return;
-    await dispatch(addBoard(input));
+    await dispatch(addBoard(input)).unwrap();
 
     setIsOpen(false);
     setInput("");
@@ -60,10 +61,10 @@ const CreateBoard = () => {
                 <Dialog.Header>
                   <Dialog.Title>Create board</Dialog.Title>
                 </Dialog.Header>
-                {status.add.loading && <Loading height="200px" />}
-                {status.add.error && <Error error={status.add.error} />}
+                {loading && <Loading height="200px" />}
+                {error && <Error error={error} />}
 
-                {!status.add.loading && !status.add.error && (
+                {!loading && !error && (
                   <Dialog.Body>
                     <Field.Root required>
                       <Field.Label>

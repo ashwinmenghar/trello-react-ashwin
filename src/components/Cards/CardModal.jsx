@@ -1,27 +1,30 @@
-import { getCheckListsInCard } from "@/helper";
 import { CloseButton, Dialog, HStack, Portal, Text } from "@chakra-ui/react";
 import { useState } from "react";
 import Loading from "../Loading";
 import CheckList from "../checklist/CheckList";
 import AddChecklist from "./AddChecklist";
-import { useChecklist } from "@/context/ChecklistContext";
+import { useDispatch, useSelector } from "react-redux";
+import { getCheckLists } from "@/redux/slices/checklist/thunks/checklistThunks";
+import { reset } from "@/redux/slices/checklist/checklistSlice";
+import Error from "../Error";
 
 const CardModal = ({ name, cardId }) => {
-  const { checklists, setChecklists } = useChecklist();
+  const { checklists } = useSelector((state) => state.checklists);
+  const dispatch = useDispatch();
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   // Handle card dialog
   const handleCardDialog = async () => {
-    try {
-      setChecklists({ type: "RESET" });
-      setLoading(true);
+    setLoading(true);
+    setError(null);
 
-      const { data } = await getCheckListsInCard(cardId);
-      setChecklists({ type: "SET_CHECKLISTS", payload: data });
+    try {
+      dispatch(reset());
+      await dispatch(getCheckLists(cardId)).unwrap();
     } catch (error) {
-      setError(error);
+      setError(error?.message);
     } finally {
       setLoading(false);
     }
@@ -44,9 +47,9 @@ const CardModal = ({ name, cardId }) => {
               </Dialog.Header>
               <Dialog.Body>
                 {loading && <Loading height="200px" />}
-                {error && <Error error={error} />}
+                {error && <Error error={error} mt="1px" />}
 
-                {!loading && (
+                {!loading && !error && (
                   <AddChecklist
                     setLoading={setLoading}
                     cardId={cardId}
