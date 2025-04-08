@@ -6,8 +6,6 @@ const initialState = {
   cards: [],
   status: {
     fetch: { loading: false, error: null },
-    addCard: { loading: false, error: null },
-    addList: { loading: false, error: null },
   },
 };
 
@@ -38,21 +36,10 @@ export const cardsSlice = createSlice({
       })
 
       // Add card case
-      .addCase(addCard.pending, (state) => {
-        state.status.addCard.loading = true;
-        state.status.addCard.error = null;
-      })
       .addCase(addCard.fulfilled, (state, action) => {
-        state.status.addCard.loading = false;
-
         const { idList } = action.payload;
         const list = state.cards.find((l) => l.id === idList);
         if (list) list.cardData.push(action.payload);
-      })
-      .addCase(addCard.rejected, (state, action) => {
-        state.status.addCard.loading = false;
-        state.status.addCard.error =
-          action.error?.message || "Failed to add card";
       })
 
       // Remove list case
@@ -61,22 +48,12 @@ export const cardsSlice = createSlice({
       })
 
       // Add list case
-      .addCase(addList.pending, (state) => {
-        state.status.addList.loading = true;
-        state.status.addList.error = null;
-      })
       .addCase(addList.fulfilled, (state, action) => {
-        state.status.addList.loading = false;
         const newList = {
           ...action.payload,
           cardData: [],
         };
         state.cards = [newList, ...state.cards];
-      })
-      .addCase(addList.rejected, (state, action) => {
-        state.status.addList.loading = false;
-        state.status.addList.error =
-          action.error?.message || "Failed to add list";
       });
   },
 });
