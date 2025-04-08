@@ -82,12 +82,12 @@ export const removeCard = async (listId) => {
   }
 };
 
-export const toggleCheckList = async (cardId, checkItemId, state) => {
+export const toggleCheckList = async (cardId, checkItemId, isComplete) => {
   try {
     const { data } = await apiV1Instance.put(
       `/cards/${cardId}/checkItem/${checkItemId}`,
       {
-        state: state === "complete" ? "incomplete" : "complete",
+        state: isComplete === "complete" ? "incomplete" : "complete",
       }
     );
 

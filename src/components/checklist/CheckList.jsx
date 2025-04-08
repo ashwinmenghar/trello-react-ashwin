@@ -7,15 +7,21 @@ import CheckListProgress from "./CheckListProgress";
 
 import CheckListItems from "./CheckListItems";
 import CheckListNewItemForm from "./CheckListNewItemForm";
-import { useChecklist } from "@/context/ChecklistContext";
-import { createItem, deleteCheckList, toggleCheckList } from "@/helper";
+import { useDispatch } from "react-redux";
+import {
+  addItem,
+  removeCheckList,
+  toggleCheckListCompletion,
+} from "@/redux/slices/checklist/thunks/checklistThunks";
 
 const CheckList = ({ checkList, cardId }) => {
-  const { setChecklists } = useChecklist();
+  // const { setChecklists } = useChecklist();
   const { checkItems, name, id } = checkList;
 
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  const dispatch = useDispatch();
 
   // Calculate total percentage
   const totalPercentage = checkItems.length
@@ -27,26 +33,15 @@ const CheckList = ({ checkList, cardId }) => {
     : 0;
 
   // Handle toggle check item
-  const handleToggleCheckItem = async (checkItemId, state) => {
+  const handleToggleCheckItem = async (checkItemId, isComplete) => {
     try {
       setLoading(true);
 
-      const updatedCheckList = await toggleCheckList(
-        cardId,
-        checkItemId,
-        state
-      );
-
-      setChecklists({
-        type: "UPDATE_CHECKITEM",
-        payload: {
-          checklistId: id,
-          checkItemId,
-          state: updatedCheckList.state,
-        },
-      });
+      await dispatch(
+        toggleCheckListCompletion({ cardId, checkItemId, isComplete })
+      ).unwrap();
     } catch (error) {
-      setError(error);
+      setError(error.message);
     } finally {
       setLoading(false);
     }
@@ -56,15 +51,7 @@ const CheckList = ({ checkList, cardId }) => {
   const handleAddItem = async (itemText) => {
     try {
       setLoading(true);
-      const newItem = await createItem(id, itemText);
-
-      setChecklists({
-        type: "ADD_CHECKITEM",
-        payload: {
-          newItem,
-          checklistId: id,
-        },
-      });
+      await dispatch(addItem({ checkListId: id, name: itemText })).unwrap();
     } catch (error) {
       setError(error);
     } finally {
@@ -76,21 +63,17 @@ const CheckList = ({ checkList, cardId }) => {
   const handleDeleteCheckList = async () => {
     try {
       setLoading(true);
-      await deleteCheckList(id);
 
-      setChecklists({
-        type: "DELETE_CHECKLIST",
-        payload: id,
-      });
+      await dispatch(removeCheckList(id)).unwrap();
     } catch (error) {
-      setError(error);
+      setError(error.message);
     } finally {
       setLoading(false);
     }
   };
 
   if (loading) return <Loading height="100px" />;
-  if (error) return <Error error={error} />;
+  if (error) return <Error error={error} mt="1px" />;
 
   return (
     <Box mt="10" px="2" py="1">
