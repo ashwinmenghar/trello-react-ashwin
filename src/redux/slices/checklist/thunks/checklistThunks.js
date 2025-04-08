@@ -2,6 +2,7 @@ import {
   addCheckList,
   createItem,
   deleteCheckList,
+  deleteItem,
   getCheckListsInCard,
   toggleCheckList,
 } from "@/helper";
@@ -42,5 +43,16 @@ export const addItem = createAsyncThunk(
   "create/item",
   async ({ checkListId, name }) => {
     return await createItem(checkListId, name);
+  }
+);
+
+export const removeItem = createAsyncThunk(
+  "delete/item",
+  async ({ checklistId, checkItemId }) => {
+    await deleteItem(checklistId, checkItemId);
+    return {
+      checklistId,
+      checkItemId,
+    };
   }
 );

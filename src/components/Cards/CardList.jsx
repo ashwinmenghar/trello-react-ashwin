@@ -46,7 +46,7 @@ const CardList = ({ list, isActive, onCardClick }) => {
   return (
     <Card.Root width="400px" rounded="2xl" bg={"gray.200"} height="100%">
       {loading && <Loading height="200px" />}
-      {error && <Error error={error} mt="1" />}
+      {error && <Error error={error} />}
 
       {!loading && !error && (
         <>

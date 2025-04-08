@@ -9,14 +9,16 @@ import { fetchBoards } from "@/redux/slices/board/thunks/boardsThunks";
 
 const BoardList = () => {
   const { boards, status } = useSelector((state) => state.board);
+  const { error, loading } = status.fetch;
+
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(fetchBoards());
   }, []);
 
-  if (status.fetch.loading) return <Loading />;
-  if (status.fetch.error) return <Error error={status.fetch.error} />;
+  if (loading) return <Loading />;
+  if (error) return <Error error={error.message} mt="100px" />;
 
   return (
     <Container>

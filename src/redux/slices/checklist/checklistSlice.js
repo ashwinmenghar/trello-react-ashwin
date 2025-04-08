@@ -4,6 +4,7 @@ import {
   createCheckList,
   getCheckLists,
   removeCheckList,
+  removeItem,
   toggleCheckListCompletion,
 } from "./thunks/checklistThunks";
 
@@ -59,6 +60,19 @@ export const checklistSlice = createSlice({
             ? {
                 ...cl,
                 checkItems: [...cl.checkItems, action.payload],
+              }
+            : cl
+        );
+      })
+      // Remove Item
+      .addCase(removeItem.fulfilled, (state, action) => {
+        state.checklists = state.checklists.map((cl) =>
+          cl.id === action.payload.checklistId
+            ? {
+                ...cl,
+                checkItems: cl.checkItems.filter(
+                  (item) => item.id !== action.payload.checkItemId
+                ),
               }
             : cl
         );

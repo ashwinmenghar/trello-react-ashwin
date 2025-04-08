@@ -29,7 +29,7 @@ const AddList = ({ boardId }) => {
   return (
     <Card.Root width="400px" rounded="2xl" bg={"gray.200"} height="100%">
       {loading && <Loading height="100px" />}
-      {error && <Error error={error} mt="1"/>}
+      {error && <Error error={error}/>}
       {!loading && !error && (
         <Card.Body>
           {showAddList ? (

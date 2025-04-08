@@ -102,7 +102,6 @@ export const createItem = async (checkListId, name) => {
     const { data } = await apiV1Instance.post(
       `/checklists/${checkListId}/checkItems?name=${name}`
     );
-
     return data;
   } catch (error) {
     throw new Error(error.message || "Something went wrong");

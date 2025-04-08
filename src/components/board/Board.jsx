@@ -4,10 +4,12 @@ import { Link } from "react-router";
 const Board = ({ board }) => {
   return (
     <Card.Root
-      width="200px"
+      width="400px"
       shadow="sm"
       cursor="pointer"
       m="10px"
+      textAlign="center"
+      py="20px"
       _hover={{ bg: "gray.100" }}
     >
       <Link to={board.id}>

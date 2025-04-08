@@ -10,38 +10,49 @@ const initialState = {
   },
 };
 
+const handlePending = (state, type) => {
+  state.status[type].loading = true;
+  state.status[type].error = null;
+};
+
+const handleFulfilled = (state, action, type) => {
+  state.status[type].loading = false;
+  if (type === "fetch") {
+    state.boards = action.payload;
+  } else if (type === "add") {
+    state.boards.push(action.payload);
+    state.boards.sort((a, b) => a.name.localeCompare(b.name));
+  }
+};
+
+const handleRejected = (state, action, type) => {
+  state.status[type].loading = false;
+  state.status[type].error = action.error;
+};
+
 export const boardSlice = createSlice({
   name: "boards",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchBoards.pending, (state) => {
-        state.status.fetch.loading = true;
-        state.status.fetch.error = null;
-      })
-      .addCase(fetchBoards.fulfilled, (state, action) => {
-        state.status.fetch.loading = false;
-        state.boards = action.payload;
-      })
-      .addCase(fetchBoards.rejected, (state, action) => {
-        state.status.fetch.loading = false;
-        state.status.fetch.error = action.error;
-      });
+      // Fetch boards case
+      .addCase(fetchBoards.pending, (state) => handlePending(state, "fetch"))
+      .addCase(fetchBoards.fulfilled, (state, action) =>
+        handleFulfilled(state, action, "fetch")
+      )
+      .addCase(fetchBoards.rejected, (state, action) =>
+        handleRejected(state, action, "fetch")
+      )
 
-    builder
-      .addCase(addBoard.pending, (state) => {
-        state.status.add.loading = true;
-        state.status.add.error = null;
-      })
-      .addCase(addBoard.fulfilled, (state, action) => {
-        state.status.add.loading = false;
-        state.boards.push(action.payload);
-      })
-      .addCase(addBoard.rejected, (state, action) => {
-        state.status.add.loading = false;
-        state.status.add.error = action.error;
-      });
+      // Add board case
+      .addCase(addBoard.pending, (state) => handlePending(state, "add"))
+      .addCase(addBoard.fulfilled, (state, action) =>
+        handleFulfilled(state, action, "add")
+      )
+      .addCase(addBoard.rejected, (state, action) =>
+        handleRejected(state, action, "add")
+      );
   },
 });
 

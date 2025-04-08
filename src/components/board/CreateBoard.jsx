@@ -41,11 +41,12 @@ const CreateBoard = () => {
           onClose={() => setIsOpen(false)}
         >
           <Card.Root
-            width="200px"
+            width="400px"
             shadow="sm"
             cursor="pointer"
             m="10px"
             bg="gray.300"
+            py="20px"
             _hover={{ bg: "gray.200" }}
             onClick={() => setIsOpen(true)}
           >

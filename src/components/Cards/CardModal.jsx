@@ -47,7 +47,7 @@ const CardModal = ({ name, cardId }) => {
               </Dialog.Header>
               <Dialog.Body>
                 {loading && <Loading height="200px" />}
-                {error && <Error error={error} mt="1px" />}
+                {error && <Error error={error} />}
 
                 {!loading && !error && (
                   <AddChecklist

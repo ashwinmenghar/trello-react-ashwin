@@ -15,7 +15,6 @@ import {
 } from "@/redux/slices/checklist/thunks/checklistThunks";
 
 const CheckList = ({ checkList, cardId }) => {
-  // const { setChecklists } = useChecklist();
   const { checkItems, name, id } = checkList;
 
   const [error, setError] = useState(null);
@@ -73,7 +72,7 @@ const CheckList = ({ checkList, cardId }) => {
   };
 
   if (loading) return <Loading height="100px" />;
-  if (error) return <Error error={error} mt="1px" />;
+  if (error) return <Error error={error} />;
 
   return (
     <Box mt="10" px="2" py="1">

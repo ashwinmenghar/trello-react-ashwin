@@ -1,13 +1,13 @@
-import { useChecklist } from "@/context/ChecklistContext";
 import { Box, Checkbox } from "@chakra-ui/react";
 import { useState } from "react";
 import { MdDelete } from "react-icons/md";
 import Loading from "../Loading";
 import Error from "../Error";
-import { deleteItem } from "@/helper";
+import { useDispatch } from "react-redux";
+import { removeItem } from "@/redux/slices/checklist/thunks/checklistThunks";
 
 const CheckListItems = ({ items, onToggle, checklistId }) => {
-  const { setChecklists } = useChecklist();
+  const dispatch = useDispatch();
 
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -16,17 +16,11 @@ const CheckListItems = ({ items, onToggle, checklistId }) => {
   const handleDeleteItem = async (checkItemId) => {
     try {
       setLoading(true);
-      await deleteItem(checklistId, checkItemId);
-
-      setChecklists({
-        type: "DELETE_CHECKITEM",
-        payload: {
-          checklistId,
-          checkItemId,
-        },
-      });
+      await dispatch(removeItem({ checklistId, checkItemId })).unwrap();
     } catch (error) {
-      setError(error);
+      console.log(error);
+
+      setError(error.message);
     } finally {
       setLoading(false);
     }

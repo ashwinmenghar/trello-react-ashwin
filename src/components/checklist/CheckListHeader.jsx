@@ -9,7 +9,7 @@ const CheckListHeader = ({ name, handleDeleteCheckList }) => {
         <Heading size="md">{name}</Heading>
       </Box>
       <Button variant="outline" size="sm" onClick={handleDeleteCheckList}>
-        Deletes
+        Delete
       </Button>
     </Box>
   );
