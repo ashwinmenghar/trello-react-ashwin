@@ -11,8 +11,11 @@ const AddCard = ({
   const [input, setInput] = useState("");
 
   // Handle add card function
-  const handleAddData = () => {
-    handleAdd(input);
+  const handleAddCard = () => {
+    const trimmed = input.trim();
+    if (!trimmed) return;
+
+    handleAdd(trimmed);
     setInput("");
   };
 
@@ -36,11 +39,11 @@ const AddCard = ({
         bg="blue.600"
         color="white"
         p="10px"
-        onClick={handleAddData}
+        onClick={handleAddCard}
       >
         {buttonTitle}
       </Button>
-      <Button variant="plain" onClick={() => onCardClick(null)}>
+      <Button variant="plain" onClick={onCardClick}>
         <IoClose />
       </Button>
     </Box>

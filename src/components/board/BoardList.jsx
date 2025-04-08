@@ -15,7 +15,7 @@ const BoardList = () => {
 
   useEffect(() => {
     dispatch(fetchBoards());
-  }, []);
+  }, [dispatch]);
 
   if (loading) return <Loading />;
   if (error) return <Error error={error.message} mt="100px" />;

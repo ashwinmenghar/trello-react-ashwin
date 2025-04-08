@@ -18,9 +18,11 @@ const CheckListNewItemForm = ({ handleAddItem }) => {
         size="sm"
         variant="surface"
         onClick={() => {
-          handleAddItem(itemText);
+          if (!itemText.trim()) return;
+          handleAddItem(itemText.trim());
           setItemText("");
         }}
+        disabled={!itemText.trim()}
       >
         Add
       </Button>

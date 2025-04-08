@@ -10,9 +10,14 @@ const AddChecklist = ({ setLoading, cardId, setError }) => {
 
   // Handle Add checklist
   const handleAddCheckList = async () => {
+    const trimmed = checklistText.trim();
+    if (!trimmed) return;
+
     try {
       setLoading(true);
-      await dispatch(createCheckList({ checklistText, cardId })).unwrap();
+      await dispatch(
+        createCheckList({ checklistText: trimmed, cardId })
+      ).unwrap();
     } catch (error) {
       setError(error.message || "Something went wrong");
     } finally {
@@ -41,7 +46,13 @@ const AddChecklist = ({ setLoading, cardId, setError }) => {
               value={checklistText}
               onChange={(e) => setChecklistText(e.target.value)}
             />
-            <Button size="sm" mt="5" w="100%" onClick={handleAddCheckList}>
+            <Button
+              size="sm"
+              mt="5"
+              w="100%"
+              onClick={handleAddCheckList}
+              disabled={!checklistText.trim()}
+            >
               Add
             </Button>
           </Popover.Body>

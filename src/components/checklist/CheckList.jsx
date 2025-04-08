@@ -33,9 +33,10 @@ const CheckList = ({ checkList, cardId }) => {
 
   // Handle toggle check item
   const handleToggleCheckItem = async (checkItemId, isComplete) => {
-    try {
-      setLoading(true);
+    setLoading(true);
+    setError(null);
 
+    try {
       await dispatch(
         toggleCheckListCompletion({ cardId, checkItemId, isComplete })
       ).unwrap();
@@ -48,11 +49,13 @@ const CheckList = ({ checkList, cardId }) => {
 
   // Handle add new item
   const handleAddItem = async (itemText) => {
+    setLoading(true);
+    setError(null);
+
     try {
-      setLoading(true);
       await dispatch(addItem({ checkListId: id, name: itemText })).unwrap();
     } catch (error) {
-      setError(error);
+      setError(error?.message);
     } finally {
       setLoading(false);
     }
@@ -60,12 +63,13 @@ const CheckList = ({ checkList, cardId }) => {
 
   // Handle delete check list
   const handleDeleteCheckList = async () => {
-    try {
-      setLoading(true);
+    setLoading(true);
+    setError(null);
 
+    try {
       await dispatch(removeCheckList(id)).unwrap();
     } catch (error) {
-      setError(error.message);
+      setError(error?.message);
     } finally {
       setLoading(false);
     }

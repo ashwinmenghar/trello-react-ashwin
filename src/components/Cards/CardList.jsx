@@ -21,13 +21,12 @@ const CardList = ({ list, isActive, onCardClick }) => {
 
     try {
       setLoading(true);
-
       await dispatch(addCard({ name: input, listId: list.id })).unwrap();
-      onCardClick(null);
     } catch (error) {
       setError(error.message);
     } finally {
       setLoading(false);
+      onCardClick(null);
     }
   };
 
@@ -61,8 +60,8 @@ const CardList = ({ list, isActive, onCardClick }) => {
             </Box>
           </Card.Header>
           <Card.Body gap="2">
-            {list?.cardData?.map((list) => (
-              <CardItem list={list} key={list.id} />
+            {list?.cardData?.map((card) => (
+              <CardItem list={card} key={card.id} />
             ))}
           </Card.Body>
           <Card.Footer>

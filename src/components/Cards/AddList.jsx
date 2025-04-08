@@ -16,11 +16,12 @@ const AddList = ({ boardId }) => {
 
   // Handle add list function
   const handleAddList = async (input) => {
-    if (!input.trim()) return;
-    setLoading(true);
+    const trimmed = input.trim();
+    if (!trimmed) return;
 
     try {
-      await dispatch(addList({ input, boardId })).unwrap();
+      setLoading(true);
+      await dispatch(addList({ input: trimmed, boardId })).unwrap();
     } catch (err) {
       setError(err.message);
     } finally {
@@ -39,7 +40,7 @@ const AddList = ({ boardId }) => {
             <AddCard
               placeholder="Enter list name..."
               buttonTitle="Add list"
-              onCardClick={setShowAddList}
+              onCardClick={() => setShowAddList(null)}
               handleAdd={handleAddList}
             />
           ) : (

@@ -14,12 +14,11 @@ const CheckListItems = ({ items, onToggle, checklistId }) => {
 
   // Handle delete item
   const handleDeleteItem = async (checkItemId) => {
+    setLoading(true);
+
     try {
-      setLoading(true);
       await dispatch(removeItem({ checklistId, checkItemId })).unwrap();
     } catch (error) {
-      console.log(error);
-
       setError(error.message);
     } finally {
       setLoading(false);
@@ -53,7 +52,6 @@ const CheckListItems = ({ items, onToggle, checklistId }) => {
               justifyContent="space-between"
             >
               {item.name}
-
               <Box cursor="pointer" onClick={() => handleDeleteItem(item.id)}>
                 <MdDelete size="20px" />
               </Box>

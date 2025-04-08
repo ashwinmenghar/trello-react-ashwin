@@ -13,15 +13,15 @@ const CardModal = ({ name, cardId }) => {
   const dispatch = useDispatch();
 
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState(null);
 
   // Handle card dialog
   const handleCardDialog = async () => {
+    dispatch(reset());
     setLoading(true);
     setError(null);
 
     try {
-      dispatch(reset());
       await dispatch(getCheckLists(cardId)).unwrap();
     } catch (error) {
       setError(error?.message);
@@ -34,7 +34,13 @@ const CardModal = ({ name, cardId }) => {
     <HStack wrap="wrap" gap="4">
       <Dialog.Root placement="center" motionPreset="slide-in-bottom">
         <Dialog.Trigger asChild>
-          <Text p="10px" w="100%" onClick={handleCardDialog}>
+          <Text
+            p="10px"
+            w="100%"
+            onClick={!loading ? handleCardDialog : undefined}
+            cursor={loading ? "not-allowed" : "pointer"}
+            opacity={loading ? 0.5 : 1}
+          >
             {name}
           </Text>
         </Dialog.Trigger>

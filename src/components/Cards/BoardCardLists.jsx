@@ -30,7 +30,7 @@ const BoardCardLists = () => {
 
   useEffect(() => {
     fetchBoardsData(id);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   const handleCardClick = (cardId) => {
@@ -44,7 +44,7 @@ const BoardCardLists = () => {
 
       {!loading && !error && (
         <Container mt="100px">
-          <Box display="flex" gap={5} w="150rem">
+          <Box display="flex" gap={5} w="fit">
             {cards.map((list) => (
               <CardList
                 key={list.id}
