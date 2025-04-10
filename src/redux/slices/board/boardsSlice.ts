@@ -1,8 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { addBoard, fetchBoards } from "./thunks/boardsThunks";
+import { InitialState } from "../../../types/Board";
 
 // Initial state
-const initialState = {
+const initialState: InitialState = {
   boards: [],
   status: {
     fetch: { loading: false, error: null },
@@ -10,12 +11,19 @@ const initialState = {
   },
 };
 
-const handlePending = (state, type) => {
+const handlePending = (
+  state: InitialState,
+  type: keyof InitialState["status"]
+): void => {
   state.status[type].loading = true;
   state.status[type].error = null;
 };
 
-const handleFulfilled = (state, action, type) => {
+const handleFulfilled = (
+  state: InitialState,
+  action: any,
+  type: keyof InitialState["status"]
+): void => {
   state.status[type].loading = false;
   if (type === "fetch") {
     state.boards = action.payload;
@@ -25,7 +33,11 @@ const handleFulfilled = (state, action, type) => {
   }
 };
 
-const handleRejected = (state, action, type) => {
+const handleRejected = (
+  state: InitialState,
+  action: any,
+  type: keyof InitialState["status"]
+): void => {
   state.status[type].loading = false;
   state.status[type].error = action.error;
 };
