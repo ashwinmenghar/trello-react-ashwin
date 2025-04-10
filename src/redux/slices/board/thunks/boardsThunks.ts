@@ -7,6 +7,9 @@ export const fetchBoards = createAsyncThunk("boards/fetchBoards", async () => {
 });
 
 // Async thunk to add a board
-export const addBoard = createAsyncThunk("boards/addBoard", async (name) => {
-  return await createBoard(name);
-});
+export const addBoard = createAsyncThunk(
+  "boards/addBoard",
+  async (name: string) => {
+    return await createBoard(name);
+  }
+);

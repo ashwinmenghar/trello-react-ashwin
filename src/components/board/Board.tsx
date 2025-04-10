@@ -1,7 +1,8 @@
 import { Card } from "@chakra-ui/react";
 import { Link } from "react-router";
+import * as BoardType from "../../types/Board";
 
-const Board = ({ board }) => {
+const Board = ({ board }: { board: BoardType.Board }) => {
   return (
     <Card.Root
       width="400px"

@@ -12,15 +12,16 @@ import { useState } from "react";
 import Loading from "../Loading";
 import Error from "../Error";
 import { useDispatch, useSelector } from "react-redux";
-import { addBoard } from "@/redux/slices/board/thunks/boardsThunks";
+import { addBoard } from "../../redux/slices/board/thunks/boardsThunks";
+import { AppDispatch, RootState } from "../../redux/store";
 
 const CreateBoard = () => {
   const [input, setInput] = useState("");
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  const { status } = useSelector((state) => state.board);
+  const { status } = useSelector((state: RootState) => state.board);
   const { loading, error } = status.add;
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
   // Add new board
   const handleAddBoard = async () => {
@@ -38,6 +39,7 @@ const CreateBoard = () => {
           placement="center"
           motionPreset="slide-in-bottom"
           open={isOpen}
+          // @ts-ignore
           onClose={() => setIsOpen(false)}
         >
           <Card.Root

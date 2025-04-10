@@ -5,13 +5,14 @@ import Board from "./Board";
 import Loading from "../Loading";
 import Error from "../Error";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchBoards } from "@/redux/slices/board/thunks/boardsThunks";
+import { fetchBoards } from "../../redux/slices/board/thunks/boardsThunks";
+import { AppDispatch, RootState } from "../../redux/store";
 
 const BoardList = () => {
-  const { boards, status } = useSelector((state) => state.board);
+  const { boards, status } = useSelector((state: RootState) => state.board);
   const { error, loading } = status.fetch;
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
     dispatch(fetchBoards());

@@ -1,6 +1,10 @@
+import { AxiosResponse } from "axios";
 import { apiV1Instance } from "../api";
 
-export const addCheckList = async (input: string, cardId: number) => {
+export const addCheckList = async (
+  input: string,
+  cardId: number
+): Promise<AxiosResponse> => {
   try {
     const data = await apiV1Instance.post(
       `/checklists?idCard=${cardId}&name=${input}`
@@ -11,7 +15,9 @@ export const addCheckList = async (input: string, cardId: number) => {
   }
 };
 
-export const getCheckListsInCard = async (cardId: number) => {
+export const getCheckListsInCard = async (
+  cardId: number
+): Promise<AxiosResponse> => {
   try {
     const data = await apiV1Instance.get(`cards/${cardId}/checklists`);
     return data;
@@ -20,9 +26,7 @@ export const getCheckListsInCard = async (cardId: number) => {
   }
 };
 
-export const createBoard = async (name: string) => {
-  if (!name.trim()) return;
-
+export const createBoard = async (name: string): Promise<AxiosResponse> => {
   try {
     const { data } = await apiV1Instance.post(`boards/?name=${name}`);
     return data;
@@ -33,7 +37,7 @@ export const createBoard = async (name: string) => {
   }
 };
 
-export const getBoards = async () => {
+export const getBoards = async (): Promise<AxiosResponse> => {
   try {
     const { data } = await apiV1Instance.get("/members/me/boards");
     return data;
@@ -44,7 +48,10 @@ export const getBoards = async () => {
   }
 };
 
-export const createList = async (name: string, boardId: number) => {
+export const createList = async (
+  name: string,
+  boardId: number
+): Promise<AxiosResponse> => {
   try {
     const { data } = await apiV1Instance.post(
       `/lists?name=${name}&idBoard=${boardId}`
@@ -57,7 +64,10 @@ export const createList = async (name: string, boardId: number) => {
   }
 };
 
-export const createCard = async (name: string, listId: number) => {
+export const createCard = async (
+  name: string,
+  listId: number
+): Promise<AxiosResponse> => {
   try {
     const { data } = await apiV1Instance.post(
       `/cards?name=${name}&idList=${listId}`
@@ -70,7 +80,9 @@ export const createCard = async (name: string, listId: number) => {
   }
 };
 
-export const fetchBoardListAndCards = async (boardId: number) => {
+export const fetchBoardListAndCards = async (
+  boardId: number
+): Promise<{ lists: {}; cards: {} }> => {
   try {
     const lists = await apiV1Instance.get(`/boards/${boardId}/lists`);
     const cards = await apiV1Instance.get(`/boards/${boardId}/cards`);

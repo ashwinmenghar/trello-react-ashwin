@@ -5,7 +5,7 @@ export interface Board {
 
 export interface Status {
   loading: boolean;
-  error: string | null;
+  error: { message: string } | null;
 }
 
 export interface InitialState {
