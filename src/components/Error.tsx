@@ -1,7 +1,6 @@
 import { Center, Text } from "@chakra-ui/react";
-import React from "react";
 
-const Error = ({ error, mt = "1px" }) => {
+const Error = ({ error, mt = "1px" }: { error: string; mt?: string }) => {
   return (
     <Center mt={mt} p="10">
       <Text fontWeight="bold" fontSize="24px" color="red">

@@ -1,7 +1,6 @@
-import { Center, HStack, Spinner, Text, VStack } from "@chakra-ui/react";
-import React from "react";
+import { HStack, Spinner, Text, VStack } from "@chakra-ui/react";
 
-const Loading = ({ height = "100vh" }) => {
+const Loading = ({ height = "100vh" }: { height?: string }) => {
   return (
     <HStack justifyContent="center" alignItems="center" h={height}>
       <VStack colorPalette="teal">

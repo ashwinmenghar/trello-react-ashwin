@@ -65,7 +65,7 @@ const CreateBoard = () => {
                   <Dialog.Title>Create board</Dialog.Title>
                 </Dialog.Header>
                 {loading && <Loading height="200px" />}
-                {error && <Error error={error} />}
+                {error && <Error error={error.message} />}
 
                 {!loading && !error && (
                   <Dialog.Body>
