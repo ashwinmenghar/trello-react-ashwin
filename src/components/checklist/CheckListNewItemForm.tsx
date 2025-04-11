@@ -1,9 +1,13 @@
 import { Box, Button, Textarea } from "@chakra-ui/react";
 import { useState } from "react";
 
-const CheckListNewItemForm = ({ handleAddItem }) => {
-  const [itemText, setItemText] = useState("");
-  const [isActive, setIsActive] = useState(false);
+const CheckListNewItemForm = ({
+  handleAddItem,
+}: {
+  handleAddItem: (value: string) => void;
+}) => {
+  const [itemText, setItemText] = useState<string>("");
+  const [isActive, setIsActive] = useState<boolean>(false);
 
   return isActive ? (
     <Box mt="10px">

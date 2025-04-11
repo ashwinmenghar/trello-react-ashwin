@@ -32,7 +32,7 @@ export const createCheckList = createAsyncThunk(
 
 export const removeCheckList = createAsyncThunk(
   "delete/checkList",
-  async (id) => {
+  async (id: number) => {
     await deleteCheckList(id);
     return id;
   }
@@ -40,21 +40,35 @@ export const removeCheckList = createAsyncThunk(
 
 export const toggleCheckListCompletion = createAsyncThunk(
   "toggle/checklistCompletion",
-  async ({ cardId, checkItemId, isComplete }) => {
+  async ({
+    cardId,
+    checkItemId,
+    isComplete,
+  }: {
+    cardId: number;
+    checkItemId: number;
+    isComplete: string;
+  }) => {
     return await toggleCheckList(cardId, checkItemId, isComplete);
   }
 );
 
 export const addItem = createAsyncThunk(
   "create/item",
-  async ({ checkListId, name }) => {
+  async ({ checkListId, name }: { checkListId: number; name: string }) => {
     return await createItem(checkListId, name);
   }
 );
 
 export const removeItem = createAsyncThunk(
   "delete/item",
-  async ({ checklistId, checkItemId }) => {
+  async ({
+    checklistId,
+    checkItemId,
+  }: {
+    checklistId: number;
+    checkItemId: number;
+  }) => {
     await deleteItem(checklistId, checkItemId);
     return {
       checklistId,

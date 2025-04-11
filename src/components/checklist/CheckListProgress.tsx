@@ -1,6 +1,6 @@
 import { Box, HStack, Progress } from "@chakra-ui/react";
 
-const CheckListProgress = ({ percentage }) => {
+const CheckListProgress = ({ percentage }: { percentage: number }) => {
   return (
     <Box mt="2" p="4">
       <Progress.Root value={percentage} maxW="sm">

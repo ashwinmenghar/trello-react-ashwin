@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Box } from "@chakra-ui/react";
 import Loading from "../Loading";
 import Error from "../Error";
@@ -12,27 +12,40 @@ import {
   addItem,
   removeCheckList,
   toggleCheckListCompletion,
-} from "@/redux/slices/checklist/thunks/checklistThunks";
+} from "../../redux/slices/checklist/thunks/checklistThunks";
+import { AppDispatch } from "../../redux/store";
+import { Checklist } from "../../types/Checklist";
 
-const CheckList = ({ checkList, cardId }) => {
+const CheckList = ({
+  checkList,
+  cardId,
+}: {
+  checkList: Checklist;
+  cardId: number;
+}) => {
   const { checkItems, name, id } = checkList;
 
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
   // Calculate total percentage
   const totalPercentage = checkItems.length
     ? Math.floor(
-        (checkItems.filter(({ state }) => state === "complete").length /
+        (checkItems.filter(
+          ({ state }: { state: string }) => state === "complete"
+        ).length /
           checkItems.length) *
           100
       )
     : 0;
 
   // Handle toggle check item
-  const handleToggleCheckItem = async (checkItemId, isComplete) => {
+  const handleToggleCheckItem = async (
+    checkItemId: number,
+    isComplete: string
+  ) => {
     setLoading(true);
     setError(null);
 
@@ -40,22 +53,22 @@ const CheckList = ({ checkList, cardId }) => {
       await dispatch(
         toggleCheckListCompletion({ cardId, checkItemId, isComplete })
       ).unwrap();
-    } catch (error) {
-      setError(error.message);
+    } catch (error: any) {
+      setError(error?.message || "Something went wrong");
     } finally {
       setLoading(false);
     }
   };
 
   // Handle add new item
-  const handleAddItem = async (itemText) => {
+  const handleAddItem = async (itemText: string) => {
     setLoading(true);
     setError(null);
 
     try {
       await dispatch(addItem({ checkListId: id, name: itemText })).unwrap();
-    } catch (error) {
-      setError(error?.message);
+    } catch (error: any) {
+      setError(error?.message || "Something went wrong");
     } finally {
       setLoading(false);
     }
@@ -67,9 +80,9 @@ const CheckList = ({ checkList, cardId }) => {
     setError(null);
 
     try {
-      await dispatch(removeCheckList(id)).unwrap();
-    } catch (error) {
-      setError(error?.message);
+      await dispatch(removeCheckList(Number(id))).unwrap();
+    } catch (error: any) {
+      setError(error?.message || "Something went wrong");
     } finally {
       setLoading(false);
     }

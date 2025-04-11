@@ -4,22 +4,33 @@ import { MdDelete } from "react-icons/md";
 import Loading from "../Loading";
 import Error from "../Error";
 import { useDispatch } from "react-redux";
-import { removeItem } from "@/redux/slices/checklist/thunks/checklistThunks";
 
-const CheckListItems = ({ items, onToggle, checklistId }) => {
-  const dispatch = useDispatch();
+import { checkItem } from "../../types/Checklist";
+import { AppDispatch } from "../../redux/store";
+import { removeItem } from "../../redux/slices/checklist/thunks/checklistThunks";
 
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false);
+const CheckListItems = ({
+  items,
+  onToggle,
+  checklistId,
+}: {
+  items: checkItem[];
+  onToggle: (id: number, state: string) => void;
+  checklistId: number;
+}) => {
+  const dispatch = useDispatch<AppDispatch>();
+
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
 
   // Handle delete item
-  const handleDeleteItem = async (checkItemId) => {
+  const handleDeleteItem = async (checkItemId: number) => {
     setLoading(true);
 
     try {
       await dispatch(removeItem({ checklistId, checkItemId })).unwrap();
-    } catch (error) {
-      setError(error.message);
+    } catch (error: any) {
+      setError(error?.message || "Something went wrong");
     } finally {
       setLoading(false);
     }

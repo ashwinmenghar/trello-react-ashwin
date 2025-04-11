@@ -1,7 +1,13 @@
 import { Box, Button, Heading } from "@chakra-ui/react";
 import { IoMdCheckboxOutline } from "react-icons/io";
 
-const CheckListHeader = ({ name, handleDeleteCheckList }) => {
+const CheckListHeader = ({
+  name,
+  handleDeleteCheckList,
+}: {
+  name: string;
+  handleDeleteCheckList: () => void;
+}) => {
   return (
     <Box display="flex" justifyContent="space-between">
       <Box display="flex" alignItems="center" gap="2">

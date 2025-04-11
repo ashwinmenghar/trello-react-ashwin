@@ -9,7 +9,7 @@ import Error from "../Error";
 import { AppDispatch, RootState } from "../../redux/store";
 import { reset } from "../../redux/slices/checklist/checklistSlice";
 import { getCheckLists } from "../../redux/slices/checklist/thunks/checklistThunks";
-import { Card } from "../../types/Card";
+import { Checklist } from "../../types/Checklist";
 
 const CardModal = ({ name, cardId }: { name: string; cardId: number }) => {
   const { checklists } = useSelector((state: RootState) => state.checklists);
@@ -66,7 +66,7 @@ const CardModal = ({ name, cardId }: { name: string; cardId: number }) => {
                   />
                 )}
 
-                {checklists.map((list: Card) => (
+                {checklists.map((list: Checklist) => (
                   <CheckList checkList={list} cardId={cardId} key={list.id} />
                 ))}
               </Dialog.Body>
