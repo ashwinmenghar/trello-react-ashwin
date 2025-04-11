@@ -4,16 +4,19 @@ import Loading from "../Loading";
 import CheckList from "../checklist/CheckList";
 import AddChecklist from "./AddChecklist";
 import { useDispatch, useSelector } from "react-redux";
-import { getCheckLists } from "@/redux/slices/checklist/thunks/checklistThunks";
-import { reset } from "@/redux/slices/checklist/checklistSlice";
+
 import Error from "../Error";
+import { AppDispatch, RootState } from "../../redux/store";
+import { reset } from "../../redux/slices/checklist/checklistSlice";
+import { getCheckLists } from "../../redux/slices/checklist/thunks/checklistThunks";
+import { Card } from "../../types/Card";
 
-const CardModal = ({ name, cardId }) => {
-  const { checklists } = useSelector((state) => state.checklists);
-  const dispatch = useDispatch();
+const CardModal = ({ name, cardId }: { name: string; cardId: number }) => {
+  const { checklists } = useSelector((state: RootState) => state.checklists);
+  const dispatch = useDispatch<AppDispatch>();
 
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
   // Handle card dialog
   const handleCardDialog = async () => {
@@ -23,8 +26,8 @@ const CardModal = ({ name, cardId }) => {
 
     try {
       await dispatch(getCheckLists(cardId)).unwrap();
-    } catch (error) {
-      setError(error?.message);
+    } catch (error: any) {
+      setError(error?.message ?? error);
     } finally {
       setLoading(false);
     }
@@ -63,7 +66,7 @@ const CardModal = ({ name, cardId }) => {
                   />
                 )}
 
-                {checklists.map((list) => (
+                {checklists.map((list: Card) => (
                   <CheckList checkList={list} cardId={cardId} key={list.id} />
                 ))}
               </Dialog.Body>

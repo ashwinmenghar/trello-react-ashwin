@@ -1,29 +1,30 @@
 import { Button, Card } from "@chakra-ui/react";
-import React, { useState } from "react";
+import { useState } from "react";
 import AddCard from "./AddCard";
 import { IoMdAdd } from "react-icons/io";
 import Error from "../Error";
 import Loading from "../Loading";
 import { useDispatch } from "react-redux";
-import { addList } from "@/redux/slices/cards/thunks/cardsThunks";
+import { addList } from "../../redux/slices/cards/thunks/cardsThunks";
+import { AppDispatch } from "../../redux/store";
 
-const AddList = ({ boardId }) => {
-  const [showAddList, setShowAddList] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+const AddList = ({ boardId }: { boardId: number }) => {
+  const [showAddList, setShowAddList] = useState<boolean | null>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
   // Handle add list function
-  const handleAddList = async (input) => {
+  const handleAddList = async (input: string) => {
     const trimmed = input.trim();
     if (!trimmed) return;
 
     try {
       setLoading(true);
       await dispatch(addList({ input: trimmed, boardId })).unwrap();
-    } catch (err) {
-      setError(err.message);
+    } catch (err: any) {
+      setError(err?.message ?? err);
     } finally {
       setLoading(false);
       setShowAddList(false);

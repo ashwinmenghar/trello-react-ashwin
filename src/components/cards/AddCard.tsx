@@ -1,5 +1,5 @@
 import { Box, Button, Textarea } from "@chakra-ui/react";
-import React, { useState } from "react";
+import { useState } from "react";
 import { IoClose } from "react-icons/io5";
 
 const AddCard = ({
@@ -7,8 +7,13 @@ const AddCard = ({
   placeholder = "Enter a title",
   buttonTitle = "Add card",
   handleAdd,
+}: {
+  onCardClick: (cardId: number | null) => void;
+  placeholder?: string;
+  buttonTitle?: string;
+  handleAdd: (text: string) => void;
 }) => {
-  const [input, setInput] = useState("");
+  const [input, setInput] = useState<string>("");
 
   // Handle add card function
   const handleAddCard = () => {
@@ -43,7 +48,7 @@ const AddCard = ({
       >
         {buttonTitle}
       </Button>
-      <Button variant="plain" onClick={onCardClick}>
+      <Button variant="plain" onClick={() => onCardClick(null)}>
         <IoClose />
       </Button>
     </Box>

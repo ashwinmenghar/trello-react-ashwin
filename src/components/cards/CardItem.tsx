@@ -1,9 +1,8 @@
-import { Box, Text } from "@chakra-ui/react";
-import React from "react";
+import { Box } from "@chakra-ui/react";
 import CardModal from "./CardModal";
+import * as CardItemInterface from "../../types/Card";
 
-const CardItem = ({ list }) => {
-
+const CardItem = ({ list }: { list: CardItemInterface.CardItem }) => {
   return (
     <Box
       bg="white"

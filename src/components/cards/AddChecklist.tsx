@@ -1,12 +1,21 @@
-import { createCheckList } from "@/redux/slices/checklist/thunks/checklistThunks";
 import { Box, Button, Dialog, Input, Popover } from "@chakra-ui/react";
-import React, { useState } from "react";
+import { useState } from "react";
 import { IoMdCheckboxOutline } from "react-icons/io";
 import { useDispatch } from "react-redux";
+import { createCheckList } from "../../redux/slices/checklist/thunks/checklistThunks";
+import { AppDispatch } from "../../redux/store";
 
-const AddChecklist = ({ setLoading, cardId, setError }) => {
-  const [checklistText, setChecklistText] = useState("");
-  const dispatch = useDispatch();
+const AddChecklist = ({
+  setLoading,
+  cardId,
+  setError,
+}: {
+  setLoading: (value: boolean) => void;
+  cardId: number;
+  setError: (value: string) => void;
+}) => {
+  const [checklistText, setChecklistText] = useState<string>("");
+  const dispatch = useDispatch<AppDispatch>();
 
   // Handle Add checklist
   const handleAddCheckList = async () => {
@@ -18,8 +27,8 @@ const AddChecklist = ({ setLoading, cardId, setError }) => {
       await dispatch(
         createCheckList({ checklistText: trimmed, cardId })
       ).unwrap();
-    } catch (error) {
-      setError(error.message || "Something went wrong");
+    } catch (error: any) {
+      setError(error?.message || "Something went wrong");
     } finally {
       setLoading(false);
     }

@@ -10,7 +10,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 
 export const getCheckLists = createAsyncThunk(
   "fetch/checklists",
-  async (cardId) => {
+  async (cardId: number) => {
     const { data } = await getCheckListsInCard(cardId);
     return data;
   }
@@ -18,7 +18,13 @@ export const getCheckLists = createAsyncThunk(
 
 export const createCheckList = createAsyncThunk(
   "add/checklist",
-  async ({ checklistText, cardId }) => {
+  async ({
+    checklistText,
+    cardId,
+  }: {
+    checklistText: string;
+    cardId: number;
+  }) => {
     const { data } = await addCheckList(checklistText, cardId);
     return data;
   }
