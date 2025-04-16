@@ -1,9 +1,11 @@
 import { AxiosResponse } from "axios";
 import { apiV1Instance } from "../api";
+import { CardData } from "../types/Card";
+import { List } from "../types/Board";
 
 export const addCheckList = async (
   input: string,
-  cardId: number
+  cardId: string
 ): Promise<AxiosResponse> => {
   try {
     const data = await apiV1Instance.post(
@@ -16,7 +18,7 @@ export const addCheckList = async (
 };
 
 export const getCheckListsInCard = async (
-  cardId: number
+  cardId: string
 ): Promise<AxiosResponse> => {
   try {
     const data = await apiV1Instance.get(`cards/${cardId}/checklists`);
@@ -50,8 +52,8 @@ export const getBoards = async (): Promise<AxiosResponse> => {
 
 export const createList = async (
   name: string,
-  boardId: number
-): Promise<AxiosResponse> => {
+  boardId: string
+): Promise<List> => {
   try {
     const { data } = await apiV1Instance.post(
       `/lists?name=${name}&idBoard=${boardId}`
@@ -66,8 +68,8 @@ export const createList = async (
 
 export const createCard = async (
   name: string,
-  listId: number
-): Promise<AxiosResponse> => {
+  listId: string
+): Promise<CardData> => {
   try {
     const { data } = await apiV1Instance.post(
       `/cards?name=${name}&idList=${listId}`
@@ -81,8 +83,8 @@ export const createCard = async (
 };
 
 export const fetchBoardListAndCards = async (
-  boardId: number
-): Promise<{ lists: {}; cards: {} }> => {
+  boardId: string
+): Promise<{ lists: []; cards: [] }> => {
   try {
     const lists = await apiV1Instance.get(`/boards/${boardId}/lists`);
     const cards = await apiV1Instance.get(`/boards/${boardId}/cards`);
@@ -95,7 +97,7 @@ export const fetchBoardListAndCards = async (
   }
 };
 
-export const removeCard = async (listId: number) => {
+export const removeCard = async (listId: string) => {
   try {
     const { data } = await apiV1Instance.put(`/lists/${listId}?closed=true`);
     return data;
@@ -107,8 +109,8 @@ export const removeCard = async (listId: number) => {
 };
 
 export const toggleCheckList = async (
-  cardId: number,
-  checkItemId: number,
+  cardId: string,
+  checkItemId: string,
   isComplete: string
 ) => {
   try {
@@ -127,7 +129,7 @@ export const toggleCheckList = async (
   }
 };
 
-export const createItem = async (checkListId: number, name: string) => {
+export const createItem = async (checkListId: string, name: string) => {
   try {
     const { data } = await apiV1Instance.post(
       `/checklists/${checkListId}/checkItems?name=${name}`
@@ -140,7 +142,7 @@ export const createItem = async (checkListId: number, name: string) => {
   }
 };
 
-export const deleteItem = async (checkListId: number, checkItemId: number) => {
+export const deleteItem = async (checkListId: string, checkItemId: string) => {
   try {
     await apiV1Instance.delete(
       `/checklists/${checkListId}/checkItems/${checkItemId}`
@@ -152,7 +154,7 @@ export const deleteItem = async (checkListId: number, checkItemId: number) => {
   }
 };
 
-export const deleteCheckList = async (checkListId: number) => {
+export const deleteCheckList = async (checkListId: string) => {
   try {
     await apiV1Instance.delete(`/checklists/${checkListId}`);
   } catch (error) {

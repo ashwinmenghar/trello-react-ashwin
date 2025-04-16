@@ -2,7 +2,7 @@ import { Box } from "@chakra-ui/react";
 import CardModal from "./CardModal";
 import * as CardItemInterface from "../../types/Card";
 
-const CardItem = ({ list }: { list: CardItemInterface.CardItem }) => {
+const CardItem = ({ list }: { list: CardItemInterface.CardData }) => {
   return (
     <Box
       bg="white"

@@ -11,7 +11,7 @@ import { reset } from "../../redux/slices/checklist/checklistSlice";
 import { getCheckLists } from "../../redux/slices/checklist/thunks/checklistThunks";
 import { Checklist } from "../../types/Checklist";
 
-const CardModal = ({ name, cardId }: { name: string; cardId: number }) => {
+const CardModal = ({ name, cardId }: { name: string; cardId: string }) => {
   const { checklists } = useSelector((state: RootState) => state.checklists);
   const dispatch = useDispatch<AppDispatch>();
 

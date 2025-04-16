@@ -8,7 +8,7 @@ import { useDispatch } from "react-redux";
 import { addList } from "../../redux/slices/cards/thunks/cardsThunks";
 import { AppDispatch } from "../../redux/store";
 
-const AddList = ({ boardId }: { boardId: number }) => {
+const AddList = ({ boardId }: { boardId: string }) => {
   const [showAddList, setShowAddList] = useState<boolean | null>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);

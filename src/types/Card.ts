@@ -1,11 +1,22 @@
-export interface Card {
-  id: number;
+export interface CardData {
+  id: string;
+  idBoard: string;
+  idList: string;
   name: string;
-  listId: number;
-  cardData: CardItem[];
 }
 
 export interface CardItem {
   id: number;
   name: string;
+}
+
+export interface InitialState {
+  cards: ListAndCards[];
+}
+
+export interface ListAndCards {
+  id: string;
+  name: string;
+  idBoard: string;
+  cardData: CardData[];
 }

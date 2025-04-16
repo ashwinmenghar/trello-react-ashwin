@@ -1,8 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { addCard, addList, fetchCards, removeList } from "./thunks/cardsThunks";
+import { CardData, InitialState, ListAndCards } from "../../../types/Card";
 
 // Initial state
-const initialState = {
+const initialState: InitialState = {
   cards: [],
 };
 
@@ -15,9 +16,9 @@ export const cardsSlice = createSlice({
       .addCase(fetchCards.fulfilled, (state, action) => {
         const { cards, lists } = action.payload;
 
-        state.cards = lists.map((list) => ({
+        state.cards = lists.map((list: ListAndCards) => ({
           ...list,
-          cardData: cards.filter((card) => card.idList === list.id),
+          cardData: cards.filter((card: CardData) => card.idList === list.id),
         }));
       })
 
@@ -25,7 +26,9 @@ export const cardsSlice = createSlice({
       .addCase(addCard.fulfilled, (state, action) => {
         const { idList } = action.payload;
         const list = state.cards.find((l) => l.id === idList);
-        if (list) list.cardData.push(action.payload);
+        if (list) {
+          list.cardData.push(action.payload);
+        }
       })
 
       // Remove list case

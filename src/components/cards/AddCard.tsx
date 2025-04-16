@@ -8,7 +8,7 @@ const AddCard = ({
   buttonTitle = "Add card",
   handleAdd,
 }: {
-  onCardClick: (cardId: number | null) => void;
+  onCardClick: (cardId: string | null) => void;
   placeholder?: string;
   buttonTitle?: string;
   handleAdd: (text: string) => void;

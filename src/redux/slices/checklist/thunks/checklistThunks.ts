@@ -5,12 +5,12 @@ import {
   deleteItem,
   getCheckListsInCard,
   toggleCheckList,
-} from "@/helper";
+} from "../../../../helper";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 export const getCheckLists = createAsyncThunk(
   "fetch/checklists",
-  async (cardId: number) => {
+  async (cardId: string) => {
     const { data } = await getCheckListsInCard(cardId);
     return data;
   }
@@ -23,7 +23,7 @@ export const createCheckList = createAsyncThunk(
     cardId,
   }: {
     checklistText: string;
-    cardId: number;
+    cardId: string;
   }) => {
     const { data } = await addCheckList(checklistText, cardId);
     return data;
@@ -32,7 +32,7 @@ export const createCheckList = createAsyncThunk(
 
 export const removeCheckList = createAsyncThunk(
   "delete/checkList",
-  async (id: number) => {
+  async (id: string) => {
     await deleteCheckList(id);
     return id;
   }
@@ -45,8 +45,8 @@ export const toggleCheckListCompletion = createAsyncThunk(
     checkItemId,
     isComplete,
   }: {
-    cardId: number;
-    checkItemId: number;
+    cardId: string;
+    checkItemId: string;
     isComplete: string;
   }) => {
     return await toggleCheckList(cardId, checkItemId, isComplete);
@@ -55,7 +55,7 @@ export const toggleCheckListCompletion = createAsyncThunk(
 
 export const addItem = createAsyncThunk(
   "create/item",
-  async ({ checkListId, name }: { checkListId: number; name: string }) => {
+  async ({ checkListId, name }: { checkListId: string; name: string }) => {
     return await createItem(checkListId, name);
   }
 );
@@ -66,8 +66,8 @@ export const removeItem = createAsyncThunk(
     checklistId,
     checkItemId,
   }: {
-    checklistId: number;
-    checkItemId: number;
+    checklistId: string;
+    checkItemId: string;
   }) => {
     await deleteItem(checklistId, checkItemId);
     return {

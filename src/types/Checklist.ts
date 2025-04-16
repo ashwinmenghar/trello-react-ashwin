@@ -1,12 +1,17 @@
 export interface Checklist {
-  id: number;
+  id: string;
   name: string;
-  cardId: number;
-  checkItems: checkItem[];
+  cardId: string;
+  checkItems: CheckItem[];
 }
 
-export interface checkItem {
-  id: number;
+export interface CheckItem {
+  id: string;
   state: string;
   name: string;
+  idChecklist: string;
+}
+
+export interface InitialState {
+  checklists: Checklist[];
 }

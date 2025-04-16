@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
   addItem,
   createCheckList,
@@ -7,8 +7,9 @@ import {
   removeItem,
   toggleCheckListCompletion,
 } from "./thunks/checklistThunks";
+import { CheckItem, Checklist, InitialState } from "../../../types/Checklist";
 
-const initialState = {
+const initialState: InitialState = {
   checklists: [],
 };
 
@@ -28,33 +29,49 @@ export const checklistSlice = createSlice({
       })
 
       // Create check list case
-      .addCase(createCheckList.fulfilled, (state, action) => {
-        state.checklists = [...state.checklists, action.payload];
-      })
+      .addCase(
+        createCheckList.fulfilled,
+        (state, action: PayloadAction<Checklist>) => {
+          state.checklists = [...state.checklists, action.payload];
+        }
+      )
       // Remove check list case
-      .addCase(removeCheckList.fulfilled, (state, action) => {
-        state.checklists = state.checklists.filter(
-          (list) => list.id !== action.payload
-        );
-      })
+      .addCase(
+        removeCheckList.fulfilled,
+        (state, action: PayloadAction<string>) => {
+          state.checklists = state.checklists.filter(
+            (list) => list.id !== action.payload
+          );
+        }
+      )
       // Toggle checklist case
-      .addCase(toggleCheckListCompletion.fulfilled, (state, action) => {
-        state.checklists = state.checklists.map((cl) =>
-          cl.id === action.payload.idChecklist
-            ? {
-                ...cl,
-                checkItems: cl.checkItems.map((item) =>
-                  item.id === action.payload.id
-                    ? { ...item, state: action.payload.state }
-                    : item
-                ),
-              }
-            : cl
-        );
-      })
+      .addCase(
+        toggleCheckListCompletion.fulfilled,
+        (
+          state,
+          action: PayloadAction<{
+            id: string;
+            idChecklist: string;
+            state: string;
+          }>
+        ) => {
+          state.checklists = state.checklists.map((cl) =>
+            cl.id === action.payload.idChecklist
+              ? {
+                  ...cl,
+                  checkItems: cl.checkItems.map((item) =>
+                    item.id === action.payload.id
+                      ? { ...item, state: action.payload.state }
+                      : item
+                  ),
+                }
+              : cl
+          );
+        }
+      )
 
       // Add item
-      .addCase(addItem.fulfilled, (state, action) => {
+      .addCase(addItem.fulfilled, (state, action: PayloadAction<CheckItem>) => {
         state.checklists = state.checklists.map((cl) =>
           cl.id === action.payload.idChecklist
             ? {
@@ -65,18 +82,24 @@ export const checklistSlice = createSlice({
         );
       })
       // Remove Item
-      .addCase(removeItem.fulfilled, (state, action) => {
-        state.checklists = state.checklists.map((cl) =>
-          cl.id === action.payload.checklistId
-            ? {
-                ...cl,
-                checkItems: cl.checkItems.filter(
-                  (item) => item.id !== action.payload.checkItemId
-                ),
-              }
-            : cl
-        );
-      });
+      .addCase(
+        removeItem.fulfilled,
+        (
+          state,
+          action: PayloadAction<{ checklistId: string; checkItemId: string }>
+        ) => {
+          state.checklists = state.checklists.map((cl) =>
+            cl.id === action.payload.checklistId
+              ? {
+                  ...cl,
+                  checkItems: cl.checkItems.filter(
+                    (item) => item.id !== action.payload.checkItemId
+                  ),
+                }
+              : cl
+          );
+        }
+      );
   },
 });
 

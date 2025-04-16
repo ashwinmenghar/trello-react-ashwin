@@ -5,7 +5,7 @@ import Loading from "../Loading";
 import Error from "../Error";
 import { useDispatch } from "react-redux";
 
-import { checkItem } from "../../types/Checklist";
+import { CheckItem } from "../../types/Checklist";
 import { AppDispatch } from "../../redux/store";
 import { removeItem } from "../../redux/slices/checklist/thunks/checklistThunks";
 
@@ -14,9 +14,9 @@ const CheckListItems = ({
   onToggle,
   checklistId,
 }: {
-  items: checkItem[];
-  onToggle: (id: number, state: string) => void;
-  checklistId: number;
+  items: CheckItem[];
+  onToggle: (id: string, state: string) => void;
+  checklistId: string;
 }) => {
   const dispatch = useDispatch<AppDispatch>();
 
@@ -24,7 +24,7 @@ const CheckListItems = ({
   const [loading, setLoading] = useState<boolean>(false);
 
   // Handle delete item
-  const handleDeleteItem = async (checkItemId: number) => {
+  const handleDeleteItem = async (checkItemId: string) => {
     setLoading(true);
 
     try {

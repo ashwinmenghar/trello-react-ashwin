@@ -8,10 +8,10 @@ import { useParams } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../redux/store";
 import { fetchCards } from "../../redux/slices/cards/thunks/cardsThunks";
-import { Card } from "../../types/Card";
+import { CardData, ListAndCards } from "../../types/Card";
 
 const BoardCardLists = () => {
-  const [activeCardId, setActiveCardId] = useState<number | null>(null);
+  const [activeCardId, setActiveCardId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -19,7 +19,7 @@ const BoardCardLists = () => {
   const { cards } = useSelector((state: RootState) => state.cards);
   const dispatch = useDispatch<AppDispatch>();
 
-  const fetchBoardsData = async (boardId: number) => {
+  const fetchBoardsData = async (boardId: string) => {
     try {
       setLoading(true);
       await dispatch(fetchCards(boardId)).unwrap();
@@ -32,12 +32,12 @@ const BoardCardLists = () => {
 
   useEffect(() => {
     if (id) {
-      fetchBoardsData(Number(id));
+      fetchBoardsData(id);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
-  const handleCardClick = (cardId: number | null) => {
+  const handleCardClick = (cardId: string | null) => {
     setActiveCardId((prevId) => (prevId === cardId ? null : cardId));
   };
 
@@ -49,7 +49,7 @@ const BoardCardLists = () => {
       {!loading && !error && (
         <Container mt="100px">
           <Box display="flex" gap={5} w="fit">
-            {cards.map((list: Card) => (
+            {cards.map((list: ListAndCards) => (
               <CardList
                 key={list.id}
                 list={list}
@@ -58,7 +58,7 @@ const BoardCardLists = () => {
               />
             ))}
 
-            <AddList boardId={Number(id)} />
+            {id && <AddList boardId={id} />}
           </Box>
         </Container>
       )}

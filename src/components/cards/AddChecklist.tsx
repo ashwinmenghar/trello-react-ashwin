@@ -11,7 +11,7 @@ const AddChecklist = ({
   setError,
 }: {
   setLoading: (value: boolean) => void;
-  cardId: number;
+  cardId: string;
   setError: (value: string) => void;
 }) => {
   const [checklistText, setChecklistText] = useState<string>("");

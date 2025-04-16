@@ -15,3 +15,9 @@ export interface InitialState {
     add: Status;
   };
 }
+
+export interface List {
+  id: string;
+  name: string;
+  idBoard: string;
+}

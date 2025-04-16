@@ -21,7 +21,7 @@ const CheckList = ({
   cardId,
 }: {
   checkList: Checklist;
-  cardId: number;
+  cardId: string;
 }) => {
   const { checkItems, name, id } = checkList;
 
@@ -43,7 +43,7 @@ const CheckList = ({
 
   // Handle toggle check item
   const handleToggleCheckItem = async (
-    checkItemId: number,
+    checkItemId: string,
     isComplete: string
   ) => {
     setLoading(true);
@@ -80,7 +80,7 @@ const CheckList = ({
     setError(null);
 
     try {
-      await dispatch(removeCheckList(Number(id))).unwrap();
+      await dispatch(removeCheckList(id)).unwrap();
     } catch (error: any) {
       setError(error?.message || "Something went wrong");
     } finally {

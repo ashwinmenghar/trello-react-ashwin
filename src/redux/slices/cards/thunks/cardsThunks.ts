@@ -8,28 +8,28 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 
 export const fetchCards = createAsyncThunk(
   "board/fetchCards",
-  async (boardId: number) => {
+  async (boardId: string) => {
     return await fetchBoardListAndCards(boardId);
   }
 );
 
 export const addCard = createAsyncThunk(
   "cards/addCard",
-  async ({ name, listId }: { name: string; listId: number }) => {
+  async ({ name, listId }: { name: string; listId: string }) => {
     return await createCard(name, listId);
   }
 );
 
 export const removeList = createAsyncThunk(
   "cards/removeList",
-  async (listId: number) => {
+  async (listId: string) => {
     return await removeCard(listId);
   }
 );
 
 export const addList = createAsyncThunk(
   "lists/addList",
-  async ({ input, boardId }: { input: string; boardId: number }) => {
+  async ({ input, boardId }: { input: string; boardId: string }) => {
     return await createList(input, boardId);
   }
 );

@@ -19,9 +19,9 @@ const CardList = ({
   isActive,
   onCardClick,
 }: {
-  list: CardInterface.Card;
+  list: CardInterface.ListAndCards;
   isActive: boolean;
-  onCardClick: (cardId: number | null) => void;
+  onCardClick: (cardId: string | null) => void;
 }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -73,7 +73,7 @@ const CardList = ({
             </Box>
           </Card.Header>
           <Card.Body gap="2">
-            {list?.cardData?.map((card: CardInterface.CardItem) => (
+            {list?.cardData?.map((card: CardInterface.CardData) => (
               <CardItem list={card} key={card.id} />
             ))}
           </Card.Body>
